@@ -1,0 +1,37 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: #FFFFFF;
+  color: #0E0F11;
+  font: 300 17px/1.75 "Heebo", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+header { padding: 32px 16px 0; text-align: center; }
+.brand {
+  font-family: "Michroma", sans-serif;
+  font-size: 22px;
+  letter-spacing: .18em;
+  padding-left: .18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  direction: ltr;
+  display: inline-block;
+}
+main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-weight: 400; font-size: clamp(30px, 6vw, 40px); line-height: 1.2; }
+.updated { color: #6E7379; font-size: 15px; margin-top: 6px; }
+.short { margin-top: 24px; padding: 16px 18px; border-right: 3px solid #0E0F11; background: #F4F5F6; font-weight: 400; }
+h2 { font-size: 19px; font-weight: 700; margin: 34px 0 8px; }
+p + p { margin-top: 10px; }
+ul { padding-right: 20px; display: grid; gap: 6px; }
+a { color: inherit; text-underline-offset: 4px; }
+a:focus-visible { outline: 2px solid #0E0F11; outline-offset: 3px; }
+.contact { margin-top: 12px; padding: 16px 18px; border: 1px solid #D9DCDF; display: grid; gap: 4px; }
+footer {
+  border-top: 1px solid #D9DCDF;
+  max-width: 720px; margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex; flex-wrap: wrap; gap: 8px 20px;
+  font-size: 15px; color: #6E7379;
+}

@@ -1,324 +1,850 @@
 <!doctype html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zilber</title>
-<meta name="description" content="Find me on Instagram, LinkedIn and TikTok.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://noamzb.com/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="Silverstein">
+<meta property="og:title" content="Silverstein · שיווק רכבי יוקרה">
+<meta property="og:description" content="רכבי יוקרה למכירה: תמונות, מפרט מלא ופנייה ישירה בוואטסאפ.">
+<meta property="og:url" content="https://noamzb.com/">
+<meta property="og:image" content="https://noamzb.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<title>Silverstein · שיווק רכבי יוקרה</title>
+<meta name="description" content="Silverstein · שיווק רכבי יוקרה: ב.מ.וו, מרצדס AMG, אסטון מרטין, ג׳יפ רוביקון, טויוטה לנד קרוזר ועוד. כל רכב עם תמונות, מפרט מלא ופנייה ישירה בוואטסאפ.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Heebo:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --fog: #E4E7EA;
-    --paper: #F1F3F4;
-    --ink: #16191D;
-    --muted: #6B727A;
-    --line: #CDD2D7;
-    --ease: cubic-bezier(.2, .7, .1, 1);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --fog: #121417;
-      --paper: #1A1D21;
-      --ink: #E9ECEF;
-      --muted: #8A929B;
-      --line: #2A2E34;
-    }
+    --bg: #FFFFFF;
+    --ink: #0E0F11;
+    --muted: #6E7379;
+    --rule: #D9DCDF;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { -webkit-text-size-adjust: 100%; }
-
   body {
     min-height: 100vh;
-    min-height: 100dvh;
-    background: var(--fog);
+    background: var(--bg);
     color: var(--ink);
-    font-family: "Familjen Grotesk", system-ui, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: clamp(16px, 5vh, 56px) 16px 40px;
+    font-family: "Heebo", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  main { width: 100%; max-width: 560px; display: flex; flex-direction: column; }
-
-  /* ---------- Header ---------- */
-  .me { margin-bottom: 20px; }
-
-  .banner {
-    position: relative;
-    aspect-ratio: 2 / 1;
-    border-radius: 14px;
-    overflow: hidden;
-    background: var(--line);
+  header {
+    padding: clamp(40px, 8vh, 72px) 16px 0;
+    text-align: center;
   }
-  .banner video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  /* soft shade at the bottom so the name stays readable over the video */
-  .banner::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(10, 12, 15, .55), rgba(10, 12, 15, 0) 55%);
-    pointer-events: none;
+  /* sellers' entry point: a clear button under the tagline, before the cars */
+  .list-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 30px;
+    padding: 14px 22px;
+    border: 1px solid var(--ink);
+    color: var(--ink); text-decoration: none;
+    font-size: 16px; font-weight: 400;
+    transition: background .2s, color .2s;
   }
-
-  h1 {
-    position: absolute;
-    left: 20px; bottom: 18px;
-    z-index: 1;
-    color: #fff;
-    font-size: clamp(26px, 7vw, 38px);
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.01em;
-    text-shadow: 0 1px 12px rgba(0, 0, 0, .25);
+  .list-cta small { font-size: 14px; color: var(--muted); font-weight: 300; transition: color .2s; }
+  .list-cta .arrow { font-size: 18px; line-height: 1; }
+  .list-cta:hover, .list-cta:focus-visible { background: var(--ink); color: #fff; }
+  .list-cta:hover small, .list-cta:focus-visible small { color: #C9CDD1; }
+  @media (max-width: 520px) {
+    .list-cta { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 10px; width: 100%; max-width: 360px; margin-inline: auto; margin-top: 26px; }
   }
-  h1::after {
-    content: "";
-    display: block;
-    height: 3px;
-    margin-top: 8px;
-    background: #fff;
-    border-radius: 2px;
+  .brand {
+    font-family: "Michroma", sans-serif;
+    font-weight: 400;
+    font-size: clamp(20px, 6.4vw, 52px);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    direction: ltr;
+    /* letter-spacing adds space after the last letter; balance it on the other side so the word stays centred */
+    padding-left: .18em;
   }
-
-  .avatar {
-    position: relative;
-    width: 88px; height: 88px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: -44px 20px 0 auto;
-    border: 4px solid var(--fog);
-    background: var(--line);
+  .rule {
+    width: 56px; height: 1px;
+    margin: 22px auto 18px;
+    background: var(--ink);
   }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .bio {
-    margin-top: 18px;
-    font-size: 17px;
-    line-height: 1.5;
+  .tagline {
+    font-weight: 300;
+    font-size: clamp(16px, 2.4vw, 20px);
+    letter-spacing: .12em;
     color: var(--muted);
-    max-width: 36ch;
   }
 
-  /* ---------- Links ---------- */
-  .links { list-style: none; border-top: 1px solid var(--line); }
-  .links li { border-bottom: 1px solid var(--line); }
+  /* ---------- Car cards ---------- */
+  main { max-width: 1200px; margin: 0 auto; padding: clamp(32px, 6vh, 56px) 16px 80px; }
+  .cars { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 28px; }
+  .car { border: 1px solid var(--rule); background: var(--bg); display: flex; flex-direction: column; }
 
-  .link {
-    position: relative;
-    display: grid;
-    grid-template-columns: 28px 1fr auto;
-    align-items: center;
-    gap: 18px;
-    padding: 26px 14px;
-    color: inherit;
-    text-decoration: none;
-    overflow: hidden;
-    isolation: isolate;
-    border-radius: 2px;
-    transition: color .45s var(--ease);
+  .gallery { position: relative; }
+  .gallery .main { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #F1F2F3; }
+  .thumbs { display: flex; gap: 6px; padding: 6px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+  .thumbs button {
+    border: 0; padding: 0; background: none; cursor: pointer;
+    opacity: .55; transition: opacity .2s;
+    outline-offset: 2px;
+    flex: 0 0 calc((100% - 12px) / 3);
+    scroll-snap-align: start;
   }
+  .thumbs button[aria-pressed="true"], .thumbs button:hover { opacity: 1; }
+  .thumbs img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 
-  /* the platform colour wipes up from the bottom */
-  .link::before {
-    content: "";
-    position: absolute; inset: 0;
-    z-index: -1;
-    background: var(--brand);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform .5s var(--ease);
+  .car-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  .car-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .model { font-family: "Michroma", sans-serif; font-size: 20px; letter-spacing: .06em; direction: ltr; }
+  .trim { font-size: 14px; color: var(--muted); direction: ltr; text-align: right; }
+  .price { font-size: 22px; font-weight: 400; white-space: nowrap; }
+  .price s, .price small { display: block; font-size: 13px; color: var(--muted); text-align: left; }
+
+  .specs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .specs div { padding: 12px 0; text-align: center; }
+  .specs div + div { border-right: 1px solid var(--rule); }
+  .specs dt { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+  .specs dd { font-size: 17px; margin-top: 2px; }
+
+  /* the six key facts, same order on every car */
+  .key-specs {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule);
   }
+  .key-specs div { background: var(--bg); padding: 10px 10px 11px; }
+  .key-specs dt { font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+  .key-specs dd { font-size: 14px; margin-top: 2px; line-height: 1.35; }
 
-  .link svg { width: 24px; height: 24px; display: block; }
-
-  .name {
-    font-size: clamp(24px, 6vw, 32px);
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    transition: transform .5s var(--ease);
+  /* everything else, one tap away */
+  .more summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid var(--rule);
+    font-size: 15px;
   }
+  .more summary::-webkit-details-marker { display: none; }
+  .more summary::after { content: "+"; font-size: 20px; line-height: 1; transition: transform .2s; }
+  .more[open] summary::after { transform: rotate(45deg); }
+  .more[open] summary { margin-bottom: 12px; }
+  .more > * + * { margin-top: 14px; }
+  .details { list-style: none; display: grid; gap: 6px; font-size: 14px; }
+  .details li { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dotted var(--rule); padding-bottom: 5px; }
+  .details span:first-child { color: var(--muted); }
 
-  .handle {
-    font-family: "DM Mono", ui-monospace, monospace;
-    font-size: 13px;
-    color: var(--muted);
-    display: flex; align-items: center; gap: 10px;
-    transition: color .45s var(--ease);
+  .note { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .price.ask { font-size: 16px; color: var(--muted); }
+  .features { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+  .features li { font-size: 13px; padding: 4px 10px; border: 1px solid var(--rule); }
+
+  .cta {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px; background: var(--ink); color: #fff;
+    text-decoration: none; font-size: 16px; letter-spacing: .04em;
+    transition: background .2s;
   }
+  .cta:hover { background: #2A2D31; }
+  .cta svg { width: 20px; height: 20px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-  .arrow {
-    display: inline-block;
-    transition: transform .5s var(--ease);
+  /* ---------- "List your car" panel ---------- */
+  .sell {
+    width: min(560px, calc(100% - 32px));
+    max-height: min(86vh, 760px);
+    margin: auto;
+    padding: 0; border: 0;
+    background: var(--bg); color: var(--ink);
+    box-shadow: 0 30px 80px -20px rgba(14, 15, 17, .45);
+    overflow: auto; overscroll-behavior: contain;
+    opacity: 0; transform: translateY(14px) scale(.97);
+    transition: opacity .32s cubic-bezier(.2,.7,.1,1), transform .32s cubic-bezier(.2,.7,.1,1);
   }
-
-  .link:hover, .link:focus-visible { color: #fff; }
-  .link:hover::before, .link:focus-visible::before { transform: scaleY(1); }
-  .link:hover .name, .link:focus-visible .name { transform: translateX(6px); }
-  .link:hover .handle, .link:focus-visible .handle { color: rgba(255,255,255,.85); }
-  .link:hover .arrow, .link:focus-visible .arrow { transform: translate(3px, -3px); }
-
-  .link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-
-  /* second accounts: quieter rows that sit under the main one */
-  .link.alt { padding-top: 16px; padding-bottom: 16px; }
-  .link.alt .name { font-size: clamp(18px, 4.6vw, 21px); color: var(--muted); transition: transform .5s var(--ease), color .45s var(--ease); }
-  .link.alt svg { width: 18px; height: 18px; margin-left: 3px; opacity: .85; }
-  .link.alt:hover .name, .link.alt:focus-visible .name { color: #fff; }
-  .link.alt:hover svg, .link.alt:focus-visible svg { opacity: 1; }
-  .tag {
-    font-family: "DM Mono", ui-monospace, monospace;
-    font-size: 11px; letter-spacing: .02em;
-    margin-left: 10px; vertical-align: middle;
-    opacity: .75;
+  .sell::backdrop { background: rgba(14, 15, 17, 0); transition: background .32s; }
+  .sell.is-open { opacity: 1; transform: none; }
+  .sell.is-open::backdrop { background: rgba(14, 15, 17, .45); }
+  .sell-inner { padding: 28px 26px 26px; }
+  .sell-close {
+    position: sticky; top: 0; float: left;
+    width: 44px; height: 44px; margin: -14px -12px 0 0;
+    border: 0; background: var(--bg); cursor: pointer;
+    font-size: 26px; line-height: 1; color: var(--ink);
   }
-  /* main + second account of the same platform read as one group */
-  .links li:has(+ li .alt) { border-bottom-style: dashed; }
-
-  .instagram {
-    --brand: linear-gradient(105deg, #FEDA75 0%, #FA7E1E 22%, #D62976 52%, #962FBF 78%, #4F5BD5 100%);
+  .sell h2 { font-family: "Michroma", sans-serif; font-weight: 400; font-size: 13px; letter-spacing: .16em; color: var(--muted); direction: ltr; text-align: right; }
+  .sell h3 { font-size: 24px; font-weight: 400; margin-top: 8px; line-height: 1.25; }
+  .sell-lead { color: var(--muted); font-size: 15px; margin-top: 8px; line-height: 1.6; }
+  .sell-steps { list-style: none; counter-reset: s; margin-top: 22px; display: grid; gap: 14px; }
+  .sell-steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 0 12px; font-size: 15px; line-height: 1.55; }
+  .sell-steps li::before {
+    content: counter(s);
+    width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--ink);
+    display: grid; place-items: center; font-size: 13px;
+    grid-row: span 2;
   }
-  .linkedin { --brand: #0A66C2; }
-  .tiktok   { --brand: #010101; }
-
-  /* TikTok's signature cyan/red offset on the icon */
-  .tiktok svg { overflow: visible; }
-  .tiktok .tt-c, .tiktok .tt-r { transition: transform .4s var(--ease); }
-  .tiktok .tt-c { transform: translate(-1.2px, -0.8px); }
-  .tiktok .tt-r { transform: translate(1.2px, 0.8px); }
-  .tiktok:hover .tt-c, .tiktok:focus-visible .tt-c { transform: translate(-1.8px, -1.2px); }
-  .tiktok:hover .tt-r, .tiktok:focus-visible .tt-r { transform: translate(1.8px, 1.2px); }
-
-  /* icons keep their app colours; they turn white once the row fills */
-  .linkedin svg { color: #0A66C2; transition: color .45s var(--ease); }
-  .ig-icon * { transition: stroke .45s var(--ease), fill .45s var(--ease); }
-  .link:hover svg, .link:focus-visible svg { color: #fff; }
-  .instagram:hover .ig-icon rect, .instagram:hover .ig-icon circle,
-  .instagram:focus-visible .ig-icon rect, .instagram:focus-visible .ig-icon circle { stroke: #fff; }
-  .instagram:hover .ig-icon circle[stroke="none"],
-  .instagram:focus-visible .ig-icon circle[stroke="none"] { fill: #fff; }
+  .sell-steps b { font-weight: 400; }
+  .sell-steps span { color: var(--muted); }
+  .sell-price {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-top: 22px; padding: 14px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    font-size: 15px;
+  }
+  .sell-price strong { font-size: 22px; font-weight: 400; }
+  .sell .cta { margin-top: 20px; }
+  .sell-fine { margin-top: 14px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .sell-fine a { color: inherit; }
+  body.no-scroll { overflow: hidden; }
+  @media (max-width: 520px) {
+    .sell { width: 100%; max-width: none; max-height: 92vh; margin: auto 0 0; transform: translateY(40px); }
+    .sell.is-open { transform: none; }
+    .sell-inner { padding: 24px 18px 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sell, .sell::backdrop { transition: none; }
+  }
 
   /* ---------- Footer ---------- */
-  footer {
-    margin-top: auto;
-    padding-top: 64px;
-    font-family: "DM Mono", ui-monospace, monospace;
-    font-size: 12px;
-    color: var(--muted);
-    display: flex; justify-content: space-between;
+  .site-foot {
+    max-width: 1200px; margin: 0 auto;
+    padding: 28px 16px 48px;
+    border-top: 1px solid var(--rule);
+    font-size: 14px; color: var(--muted);
+    display: grid; gap: 14px;
   }
+  .disclaimer { max-width: 70ch; line-height: 1.7; }
+  .foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 24px; }
+  .foot-row a { color: var(--ink); text-underline-offset: 4px; display: inline-block; padding: 10px 0; }
+  .foot-row nav { display: flex; flex-wrap: wrap; gap: 0 20px; }
+  .copy { font-size: 13px; }
 
-  /* ---------- Load-in ---------- */
-  .rise { opacity: 0; transform: translateY(14px); animation: rise .8s var(--ease) forwards; }
-  .d1 { animation-delay: .05s; } .d2 { animation-delay: .15s; }
-  .d3 { animation-delay: .3s; }  .d4 { animation-delay: .38s; }
-  .d5 { animation-delay: .46s; } .d6 { animation-delay: .54s; }
-  .d7 { animation-delay: .62s; } .d8 { animation-delay: .75s; }
-  @keyframes rise { to { opacity: 1; transform: none; } }
-
-  @media (max-width: 420px) {
-    .link { grid-template-columns: 24px 1fr; padding: 22px 10px; }
-    .handle { grid-column: 2; margin-top: -10px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before { animation: none !important; transition: none !important; }
-    .rise { opacity: 1; transform: none; }
+  @media (max-width: 440px) {
+    .key-specs { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
 <body>
-<!-- shared Instagram gradient for the icons -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0" stop-color="#FEDA75"/><stop offset=".3" stop-color="#FA7E1E"/>
-      <stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/>
-      <stop offset="1" stop-color="#4F5BD5"/>
-    </linearGradient>
-  </defs>
-</svg>
-<main>
-
-  <header class="me">
-    <div class="banner rise d1">
-      <video src="banner.mp4" poster="banner.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
-      <!-- EDIT: your name -->
-      <h1>ZILBER</h1>
-    </div>
-    <div class="avatar rise d1"><img src="avatar.jpg" alt="Zilber's cat sitting in a tree"></div>
-    <!-- EDIT: add a line about you here if you want one:
-    <p class="bio rise d2">...</p> -->
+  <header>
+    <h1 class="brand">Silverstein</h1>
+    <div class="rule" aria-hidden="true"></div>
+    <p class="tagline">שיווק רכבי יוקרה</p>
+    <a class="list-cta" href="list-your-car.html" data-open-sell>
+      <small>יש לכם רכב יוקרה למכירה?</small>
+      <span>העלאת הרכב שלכם לאתר</span>
+      <span class="arrow" aria-hidden="true">←</span>
+    </a>
   </header>
 
-  <ul class="links">
-    <li class="rise d3">
-      <a class="link instagram" href="https://www.instagram.com/noam.zb/" target="_blank" rel="noopener">
-        <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.8" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="url(#ig-grad)" stroke="none"/>
-        </svg>
-        <span class="name">Instagram</span>
-        <span class="handle">@noam.zb <span class="arrow">↗</span></span>
+  <dialog class="sell" id="sell" aria-labelledby="sell-title">
+    <div class="sell-inner">
+      <button type="button" class="sell-close" data-close aria-label="סגירה">×</button>
+      <h2>SILVERSTEIN</h2>
+      <h3 id="sell-title">העלאת הרכב שלכם לאתר</h3>
+      <p class="sell-lead">שלחו לנו תמונות ופרטים בוואטסאפ, ואנחנו נבנה לרכב מודעה מסודרת, כמו שאר הרכבים כאן.</p>
+      <ol class="sell-steps">
+        <li><b>שולחים תמונות</b><span>חזית, אחור, שני הצדדים, תא הנהג, מושבים ותא מטען.</span></li>
+        <li><b>שולחים פרטים</b><span>דגם, שנה, ק״מ, יד, טסט, מחיר מבוקש, אבזור ומספר רישוי (לבדיקה בלבד, לא יוצג).</span></li>
+        <li><b>אנחנו בונים את המודעה</b><span>בודקים מול משרד התחבורה, מטשטשים לוחיות ושולחים לכם לאישור.</span></li>
+        <li><b>מאשרים, משלמים, והרכב באתר</b><span>קונים פונים בוואטסאפ ואנחנו מעבירים אליכם את הפנייה.</span></li>
+      </ol>
+      <p class="sell-price"><span>פרסום הרכב, תשלום חד־פעמי</span><strong>500 ₪</strong></p>
+      <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A2%D7%9C%D7%95%D7%AA%20%D7%90%D7%AA%20%D7%94%D7%A8%D7%9B%D7%91%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+        שלחו לנו את הרכב בוואטסאפ
       </a>
-    </li>
-    <li class="rise d4">
-      <a class="link instagram alt" href="https://www.instagram.com/silverstein.812/" target="_blank" rel="noopener">
-        <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.8" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="url(#ig-grad)" stroke="none"/>
-        </svg>
-        <span class="name">Instagram<span class="tag">Second account</span></span>
-        <span class="handle">@silverstein.812 <span class="arrow">↗</span></span>
-      </a>
-    </li>
-    <li class="rise d5">
-      <a class="link tiktok" href="https://www.tiktok.com/@_shaiked_" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path class="tt-c" fill="#25F4EE" d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/>
-          <path class="tt-r" fill="#FE2C55" d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/>
-          <path fill="currentColor" d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/>
-        </svg>
-        <span class="name">TikTok</span>
-        <span class="handle">@_shaiked_ <span class="arrow">↗</span></span>
-      </a>
-    </li>
-    <li class="rise d6">
-      <a class="link tiktok alt" href="https://www.tiktok.com/@silverstein812" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path class="tt-c" fill="#25F4EE" d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/>
-          <path class="tt-r" fill="#FE2C55" d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/>
-          <path fill="currentColor" d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/>
-        </svg>
-        <span class="name">TikTok<span class="tag">Second account</span></span>
-        <span class="handle">@silverstein812 <span class="arrow">↗</span></span>
-      </a>
-    </li>
-    <li class="rise d7">
-      <a class="link linkedin" href="https://www.linkedin.com/in/noam-zilbershtine-7a502b421/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M4.5 3.2a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8ZM3 8.8h3v12H3v-12Zm5.3 0h2.9v1.7h.1c.4-.8 1.4-1.9 3.1-1.9 3.3 0 3.9 2.2 3.9 5v7.2h-3v-6.4c0-1.5 0-3.5-2.1-3.5s-2.5 1.7-2.5 3.4v6.5h-3v-12Z"/>
-        </svg>
-        <span class="name">LinkedIn</span>
-        <span class="handle">in/noam-zilbershtine <span class="arrow">↗</span></span>
-      </a>
-    </li>
-  </ul>
+      <p class="sell-fine">משלמים רק אחרי שאישרתם את המודעה. ביטול והחזר לפי <a href="terms.html#listing">תנאי השימוש</a> · <a href="list-your-car.html">כל הפרטים</a></p>
+    </div>
+  </dialog>
 
-  <footer class="rise d8">
-    <span>© <span id="y"></span></span>
-    <span>Say hi on any of the above</span>
+  <main>
+    <ul class="cars">
+      <!-- BMW X4 · Yad2 listing n82m6j3c + Ministry of Transport model data (X4 xDrive20i Executive 2024) -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" fetchpriority="high" src="cars/x4-8.jpg" alt="ב.מ.וו X4 בצבע כחול מט, מבט מהצד" width="1400" height="1050">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="תמונה מהצד" data-src="cars/x4-8.jpg" data-alt="ב.מ.וו X4 בצבע כחול מט, מבט מהצד"><img src="cars/thumbs/x4-8.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="תמונה מלפנים" data-src="cars/x4-9.jpg" data-alt="ב.מ.וו X4 בצבע כחול מט, מבט מלפנים"><img src="cars/thumbs/x4-9.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="תמונה מאחור" data-src="cars/x4-7.jpg" data-alt="ב.מ.וו X4 בצבע כחול מט, מבט מאחור"><img src="cars/thumbs/x4-7.jpg" alt=""></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">BMW X4</h2>
+              <p class="trim">Executive · xDrive20i · 2.0 Turbo · 184 hp</p>
+            </div>
+            <p class="price">320,000 ₪<s>330,000 ₪</s></p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2024</dd></div>
+            <div><dt>ק״מ</dt><dd>24,000</dd></div>
+            <div><dt>יד</dt><dd>2</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>בנזין 2.0 טורבו</dd></div>
+            <div><dt>הספק</dt><dd>184 כ״ס</dd></div>
+            <div><dt>תיבה</dt><dd>אוטומטית, 8 הילוכים</dd></div>
+            <div><dt>הנעה</dt><dd>כפולה · <bdi>xDrive</bdi></dd></div>
+            <div><dt>צבע</dt><dd>כחול מטאלי</dd></div>
+            <div><dt>טסט עד</dt><dd>02/2027</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>מומנט</span><span>300 ניוטון־מטר</span></li>
+              <li><span>היברידי</span><span>מתון</span></li>
+              <li><span>בעלות</span><span>פרטית</span></li>
+              <li><span>עלייה לכביש</span><span>02/2024</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>גג שמש פנורמי</li>
+              <li>מדבקת הגנה מט</li>
+              <li>מצלמה אחורית</li>
+              <li>6 כריות אוויר</li>
+              <li>5 מושבים</li>
+            </ul>
+            <p class="note">במצב חדש, עם מדבקת הגנה מט בגוון כחול מעל הצבע המקורי. תא נוסעים מרווח לחמישה.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91-BMW%20X4%202024%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Mercedes-Benz GLE 350 AMG 4MATIC · details from the user; engine specs from US-market 2026 GLE 350 4MATIC -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/gle-1.jpg" alt="מרצדס GLE 350 בצבע לבן, מבט מלפנים" width="1400" height="932">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מלפנים" data-src="cars/gle-1.jpg" data-alt="מרצדס GLE 350 בצבע לבן, מבט מלפנים"><img src="cars/thumbs/gle-1.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור" data-src="cars/gle-2.jpg" data-alt="מרצדס GLE 350 בצבע לבן, מבט מאחור"><img src="cars/thumbs/gle-2.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="לוח מחוונים" data-src="cars/gle-3.jpg" data-alt="מרצדס GLE 350 בצבע לבן, לוח מחוונים"><img src="cars/thumbs/gle-3.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מושבים קדמיים" data-src="cars/gle-4.jpg" data-alt="מרצדס GLE 350 בצבע לבן, מושבים קדמיים"><img src="cars/thumbs/gle-4.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מושב אחורי" data-src="cars/gle-5.jpg" data-alt="מרצדס GLE 350 בצבע לבן, מושב אחורי"><img src="cars/thumbs/gle-5.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="גג פנורמי" data-src="cars/gle-6.jpg" data-alt="מרצדס GLE 350 בצבע לבן, גג פנורמי"><img src="cars/thumbs/gle-6.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="דלת נהג ומערכת שמע Burmester" data-src="cars/gle-7.jpg" data-alt="מרצדס GLE 350 בצבע לבן, דלת נהג ומערכת שמע Burmester"><img src="cars/thumbs/gle-7.jpg" alt="" loading="lazy"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Mercedes GLE 350</h2>
+              <p class="trim">AMG Line · 4MATIC · 2.0 Turbo · 255 hp</p>
+            </div>
+            <p class="price">505,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2026</dd></div>
+            <div><dt>ק״מ</dt><dd>3,000</dd></div>
+            <div><dt>יד</dt><dd>00</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>בנזין 2.0 טורבו</dd></div>
+            <div><dt>הספק</dt><dd>255 כ״ס</dd></div>
+            <div><dt>תיבה</dt><dd>אוטומטית, 9 הילוכים</dd></div>
+            <div><dt>הנעה</dt><dd>כפולה · <bdi>4MATIC</bdi></dd></div>
+            <div><dt>צבע</dt><dd>לבן</dd></div>
+            <div><dt>מומנט</dt><dd>400 ניוטון־מטר</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>היברידי</span><span>מתון 48V</span></li>
+              <li><span>ריפוד</span><span>עור בז׳</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>גג פנורמי</li>
+              <li>חימום ואוורור במושבים</li>
+              <li>חבילת השחרה</li>
+              <li>דיסטרוניק (שיוט אדפטיבי)</li>
+              <li>חישוקי 20״</li>
+              <li>מערכת שמע Burmester</li>
+            </ul>
+            <p class="note">כחדשה. הרכב טרם נרשם על שם אף בעלים, כך שהרוכש יהיה הבעלים הראשון שלו.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%9E%D7%A8%D7%A6%D7%93%D7%A1%20GLE%20350%20AMG%202026%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Aston Martin Rapide · seller details, checked against the Ministry of Transport registry (data.gov.il) on 2026-10-20 -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/rapide-1.jpg" alt="אסטון מרטין Rapide בצבע שחור, מבט מלפנים" width="1050" height="1400" style="object-position:50% 72%">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מלפנים" data-src="cars/rapide-1.jpg" data-pos="50% 72%" data-alt="אסטון מרטין Rapide בצבע שחור, מבט מלפנים"><img src="cars/thumbs/rapide-1.jpg" alt="" loading="lazy" style="object-position:50% 72%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מלמעלה" data-src="cars/rapide-2.jpg" data-pos="50% 62%" data-alt="אסטון מרטין Rapide בצבע שחור, מבט מלמעלה"><img src="cars/thumbs/rapide-2.jpg" alt="" loading="lazy" style="object-position:50% 62%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור" data-src="cars/rapide-3.jpg" data-pos="50% 66%" data-alt="אסטון מרטין Rapide בצבע שחור, מבט מאחור"><img src="cars/thumbs/rapide-3.jpg" alt="" loading="lazy" style="object-position:50% 66%"></button>
+            <button type="button" aria-pressed="false" aria-label="תא הנוסעים וריפוד קוניאק" data-src="cars/rapide-4.jpg" data-pos="50% 55%" data-alt="אסטון מרטין Rapide בצבע שחור, תא הנוסעים וריפוד קוניאק"><img src="cars/thumbs/rapide-4.jpg" alt="" loading="lazy" style="object-position:50% 55%"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Aston Martin Rapide</h2>
+              <p class="trim">2017 · 6.0 V12 · 518 hp</p>
+            </div>
+            <p class="price">285,000 ₪<small>גמיש מעט לרציניים</small></p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2017</dd></div>
+            <div><dt>ק״מ</dt><dd>82,000</dd></div>
+            <div><dt>יד</dt><dd>3</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>6.0 ליטר · <bdi>V12</bdi></dd></div>
+            <div><dt>הספק</dt><dd>518 כ״ס</dd></div>
+            <div><dt>תיבה</dt><dd>אוטומטית, 8 הילוכים</dd></div>
+            <div><dt>הנעה</dt><dd>אחורית</dd></div>
+            <div><dt>צבע</dt><dd>שחור</dd></div>
+            <div><dt>טסט עד</dt><dd>08/2026</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>עלייה לכביש</span><span>08/2017</span></li>
+              <li><span>דלתות ומושבים</span><span>4 דלתות, 4 מושבים</span></li>
+              <li><span>בעלות</span><span>פרטית</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>PPF בצבע שחור</li>
+              <li>גג אלקנטרה</li>
+              <li>ריפוד עור קוניאק</li>
+            </ul>
+            <p class="note">ספורט־סדאן בעל ארבע דלתות עם מנוע V12 אטמוספרי. הרכב מצופה כרגע ב־PPF בצבע שחור, שמגן על הצבע.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%90%D7%A1%D7%98%D7%95%D7%9F%20%D7%9E%D7%A8%D7%98%D7%99%D7%9F%20Rapide%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Mercedes-AMG EQE 53 4MATIC+ · Yad2 listing 6e9mn9o4 + Ministry of Transport registry (checked 2026-10-20) -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/eqe-3.jpg" alt="מרצדס AMG EQE 53 בצבע לבן, מבט מהצד" width="640" height="416">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מהצד" data-src="cars/eqe-3.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 53 בצבע לבן, מבט מהצד"><img src="cars/thumbs/eqe-3.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מלפנים" data-src="cars/eqe-4.jpg" data-pos="50% 60%" data-alt="מרצדס AMG EQE 53 בצבע לבן, מבט מלפנים"><img src="cars/thumbs/eqe-4.jpg" alt="" loading="lazy" style="object-position:50% 60%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור בזווית" data-src="cars/eqe-5.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 53 בצבע לבן, מבט מאחור בזווית"><img src="cars/thumbs/eqe-5.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור" data-src="cars/eqe-1.jpg" data-pos="50% 42%" data-alt="מרצדס AMG EQE 53 בצבע לבן, מבט מאחור"><img src="cars/thumbs/eqe-1.jpg" alt="" loading="lazy" style="object-position:50% 42%"></button>
+            <button type="button" aria-pressed="false" aria-label="לוח מחוונים והגה AMG" data-src="cars/eqe-6.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 53 בצבע לבן, לוח מחוונים והגה AMG"><img src="cars/thumbs/eqe-6.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מסך מצד לצד" data-src="cars/eqe-7.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 53 בצבע לבן, מסך מצד לצד"><img src="cars/thumbs/eqe-7.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="תא הנהג" data-src="cars/eqe-2.jpg" data-pos="50% 38%" data-alt="מרצדס AMG EQE 53 בצבע לבן, תא הנהג"><img src="cars/thumbs/eqe-2.jpg" alt="" loading="lazy" style="object-position:50% 38%"></button>
+            <button type="button" aria-pressed="false" aria-label="מושב אחורי עם חגורות אדומות" data-src="cars/eqe-8.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 53 בצבע לבן, מושב אחורי עם חגורות אדומות"><img src="cars/thumbs/eqe-8.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Mercedes-AMG EQE 53</h2>
+              <p class="trim">4MATIC+ · Electric · 626 hp</p>
+            </div>
+            <p class="price">520,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2024</dd></div>
+            <div><dt>ק״מ</dt><dd>49,000</dd></div>
+            <div><dt>יד</dt><dd>1</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>חשמלי</dd></div>
+            <div><dt>הספק</dt><dd>626 כ״ס</dd></div>
+            <div><dt>הנעה</dt><dd>כפולה · <bdi>4MATIC+</bdi></dd></div>
+            <div><dt>צבע</dt><dd>לבן שנהב</dd></div>
+            <div><dt>טסט עד</dt><dd>08/2027</dd></div>
+            <div><dt>סוללה</dt><dd>90.6 קוט״ש</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>מומנט</span><span>950 ניוטון־מטר</span></li>
+              <li><span>בעלות</span><span>פרטית</span></li>
+              <li><span>עלייה לכביש</span><span>08/2024</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>חבילת AMG Dynamic Plus</li>
+              <li>מסך מצד לצד (Hyperscreen)</li>
+              <li>שיוט אדפטיבי</li>
+              <li>מצלמה אחורית</li>
+              <li>10 כריות אוויר</li>
+              <li>חישוקי 21״</li>
+              <li>4 צמיגים חדשים</li>
+            </ul>
+            <p class="note">שמור ומטופל בחברה, עם כל התוספות. חבילת AMG Dynamic Plus מעלה את ההספק לעד 687 כ״ס ואת התאוצה ל־0–100 קמ״ש ב־3.3 שניות.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%9E%D7%A8%D7%A6%D7%93%D7%A1%20AMG%20EQE%2053%202024%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Toyota Land Cruiser 250 Limited · Yad2 listing szw0plmz + Ministry of Transport model data (LIMITED, 2025) -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/lc-1.jpg" alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מלפנים בזווית" width="640" height="480">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מלפנים בזווית" data-src="cars/lc-1.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מלפנים בזווית"><img src="cars/thumbs/lc-1.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מהצד" data-src="cars/lc-5.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מהצד"><img src="cars/thumbs/lc-5.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מלפנים" data-src="cars/lc-3.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מלפנים"><img src="cars/thumbs/lc-3.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור" data-src="cars/lc-4.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מאחור"><img src="cars/thumbs/lc-4.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מלפנים מהצד השני" data-src="cars/lc-2.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מלפנים מהצד השני"><img src="cars/thumbs/lc-2.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מהצד מרחוק" data-src="cars/lc-6.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מבט מהצד מרחוק"><img src="cars/thumbs/lc-6.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="לוח מחוונים" data-src="cars/lc-7.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, לוח מחוונים"><img src="cars/thumbs/lc-7.jpg" alt="" loading="lazy"></button>
+            <button type="button" aria-pressed="false" aria-label="מושבים קדמיים" data-src="cars/lc-8.jpg" data-alt="טויוטה לנד קרוזר בצבע אפור כהה, מושבים קדמיים"><img src="cars/thumbs/lc-8.jpg" alt="" loading="lazy"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Toyota Land Cruiser</h2>
+              <p class="trim">Limited · 2.8 Turbo Diesel · 205 hp</p>
+            </div>
+            <p class="price">400,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2025</dd></div>
+            <div><dt>ק״מ</dt><dd>15,800</dd></div>
+            <div><dt>יד</dt><dd>2</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>טורבו דיזל 2.8</dd></div>
+            <div><dt>הספק</dt><dd>205 כ״ס</dd></div>
+            <div><dt>תיבה</dt><dd>אוטומטית</dd></div>
+            <div><dt>הנעה</dt><dd>4×4</dd></div>
+            <div><dt>צבע</dt><dd>אפור כהה מטאלי</dd></div>
+            <div><dt>טסט עד</dt><dd>04/2027</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>מושבים</span><span>7</span></li>
+              <li><span>צריכת דלק</span><span>10.99 ק״מ לליטר</span></li>
+              <li><span>בעלות מקורית</span><span>ייבוא אישי</span></li>
+              <li><span>עלייה לכביש</span><span>04/2025</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>שיוט אדפטיבי</li>
+              <li>מצלמה אחורית</li>
+              <li>9 כריות אוויר</li>
+              <li>זיהוי הולכי רגל</li>
+              <li>אורות גבוהים אוטומטיים</li>
+              <li>גרירה עד 3,500 ק״ג</li>
+            </ul>
+            <p class="note">במצב תצוגה. שילוב של נוחות ואבזור עשיר למשפחה, עם יכולות השטח של הלנד קרוזר.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%98%D7%95%D7%99%D7%95%D7%98%D7%94%20%D7%9C%D7%A0%D7%93%20%D7%A7%D7%A8%D7%95%D7%96%D7%A8%202025%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Jeep Wrangler Rubicon 392 · seller's details via the user; engine specs from Jeep's 2021 Rubicon 392 launch figures -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/jeep-1.jpg" alt="ג׳יפ רנגלר רוביקון 392 בצבע שחור, מבט מהצד" width="1400" height="1050" style="object-position:50% 60%">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מהצד" data-src="cars/jeep-1.jpg" data-pos="50% 60%" data-alt="ג׳יפ רנגלר רוביקון 392 בצבע שחור, מבט מהצד"><img src="cars/thumbs/jeep-1.jpg" alt="" loading="lazy" style="object-position:50% 60%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מלפנים" data-src="cars/jeep-2.jpg" data-pos="50% 55%" data-alt="ג׳יפ רנגלר רוביקון 392 בצבע שחור, מבט מלפנים"><img src="cars/thumbs/jeep-2.jpg" alt="" loading="lazy" style="object-position:50% 55%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט בזווית" data-src="cars/jeep-3.jpg" data-pos="50% 50%" data-alt="ג׳יפ רנגלר רוביקון 392 בצבע שחור, מבט בזווית"><img src="cars/thumbs/jeep-3.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="תא הנהג ומסך דיגיטלי" data-src="cars/jeep-4.jpg" data-pos="50% 50%" data-alt="ג׳יפ רנגלר רוביקון 392 בצבע שחור, תא הנהג ומסך דיגיטלי"><img src="cars/thumbs/jeep-4.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Jeep Wrangler Rubicon 392</h2>
+              <p class="trim">6.4 HEMI V8 · 470 hp</p>
+            </div>
+            <p class="price">400,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2021</dd></div>
+            <div><dt>ק״מ</dt><dd>45,000</dd></div>
+            <div><dt>יד</dt><dd>2</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>6.4 ליטר · <bdi>V8 HEMI</bdi></dd></div>
+            <div><dt>הספק</dt><dd>470 כ״ס</dd></div>
+            <div><dt>תיבה</dt><dd>אוטומטית, 8 הילוכים</dd></div>
+            <div><dt>הנעה</dt><dd>4×4 קבועה</dd></div>
+            <div><dt>צבע</dt><dd>שחור</dd></div>
+            <div><dt>טסט</dt><dd>לשנה</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>מומנט</span><span>637 ניוטון־מטר</span></li>
+              <li><span>0–100 קמ״ש</span><span>כ־4.5 שניות</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>בולמי Fox</li>
+              <li>אגזוז מקורי נשלט חשמלית</li>
+              <li>לוח מחוונים דיגיטלי מלא</li>
+              <li>גריל בעיצוב 2026</li>
+              <li>טמבונים ומגני סף מברזל</li>
+              <li>מצלמה קדמית ואחורית</li>
+              <li>בלימת חירום</li>
+              <li>חימום במושבים ובהגה</li>
+              <li>ריפוד עור</li>
+              <li>מקרר</li>
+              <li>תאורת אווירה</li>
+              <li>איתורן</li>
+              <li>4 צמיגים חדשים</li>
+            </ul>
+            <p class="note">ללא עבר ביטוחי, ללא תיקוני צבע וללא מכות בתחתית. אחרי טיפול גדול, ברקסים וצלחות מקוריים, ומטופל תמיד לפני הזמן.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%92%D7%B3%D7%99%D7%A4%20%D7%A8%D7%A0%D7%92%D7%9C%D7%A8%20%D7%A8%D7%95%D7%91%D7%99%D7%A7%D7%95%D7%9F%20392%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Jeep Wrangler Unlimited Rubicon 3.6 · seller's details via the user; specs from 2021 Wrangler Rubicon 3.6L listings -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/jeep2-1.jpg" alt="ג׳יפ רנגלר רוביקון בצבע אפור כהה, מבט מלפנים" width="1050" height="1867" style="object-position:50% 58%">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מלפנים" data-src="cars/jeep2-1.jpg" data-pos="50% 58%" data-alt="ג׳יפ רנגלר רוביקון בצבע אפור כהה, מבט מלפנים"><img src="cars/thumbs/jeep2-1.jpg" alt="" loading="lazy" style="object-position:50% 58%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור" data-src="cars/jeep2-2.jpg" data-pos="50% 62%" data-alt="ג׳יפ רנגלר רוביקון בצבע אפור כהה, מבט מאחור"><img src="cars/thumbs/jeep2-2.jpg" alt="" loading="lazy" style="object-position:50% 62%"></button>
+            <button type="button" aria-pressed="false" aria-label="תא הנהג" data-src="cars/jeep2-3.jpg" data-pos="50% 45%" data-alt="ג׳יפ רנגלר רוביקון בצבע אפור כהה, תא הנהג"><img src="cars/thumbs/jeep2-3.jpg" alt="" loading="lazy" style="object-position:50% 45%"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Jeep Wrangler Rubicon</h2>
+              <p class="trim">Unlimited · 3.6 V6 · 285 hp</p>
+            </div>
+            <p class="price">260,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2021</dd></div>
+            <div><dt>ק״מ</dt><dd>34,000</dd></div>
+            <div><dt>יד</dt><dd>3</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>3.6 ליטר · <bdi>V6</bdi></dd></div>
+            <div><dt>הספק</dt><dd>285 כ״ס</dd></div>
+            <div><dt>תיבה</dt><dd>אוטומטית, 8 הילוכים</dd></div>
+            <div><dt>הנעה</dt><dd>4×4 · <bdi>Rock-Trac</bdi></dd></div>
+            <div><dt>צבע</dt><dd>אפור כהה</dd></div>
+            <div><dt>מומנט</dt><dd>353 ניוטון־מטר</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>דלתות ומושבים</span><span>4 דלתות, 5 מושבים</span></li>
+              <li><span>דלק</span><span>בנזין</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>נעילת דיפרנציאלים קדמי ואחורי</li>
+              <li>תיבת העברה 4:1</li>
+              <li>צמיגי שטח Blackhawk</li>
+              <li>חישוקים אפטרמרקט</li>
+              <li>ווי גרירה אדומים</li>
+              <li>מגני בוץ</li>
+              <li>לוח מחוונים אדום</li>
+              <li>ריפוד עור</li>
+            </ul>
+            <p class="note">רוביקון בגרסת ארבע דלתות, עם יכולות השטח המלאות של הדגם: נעילות דיפרנציאל וסרני Dana 44.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%92%D7%B3%D7%99%D7%A4%20%D7%A8%D7%A0%D7%92%D7%9C%D7%A8%20%D7%A8%D7%95%D7%91%D7%99%D7%A7%D7%95%D7%9F%203.6%202021%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Mercedes EQE 350 4MATIC SUV · seller's details via the user + Ministry of Transport personal-import registry (checked 2026-10-20) -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/eqes-1.jpg" alt="מרצדס EQE SUV בצבע שחור, מבט מלפנים בזווית" width="948" height="1659" style="object-position:50% 62%">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מלפנים בזווית" data-src="cars/eqes-1.jpg" data-pos="50% 62%" data-alt="מרצדס EQE SUV בצבע שחור, מבט מלפנים בזווית"><img src="cars/thumbs/eqes-1.jpg" alt="" loading="lazy" style="object-position:50% 62%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מלפנים" data-src="cars/eqes-2.jpg" data-pos="50% 58%" data-alt="מרצדס EQE SUV בצבע שחור, מבט מלפנים"><img src="cars/thumbs/eqes-2.jpg" alt="" loading="lazy" style="object-position:50% 58%"></button>
+            <button type="button" aria-pressed="false" aria-label="פנס אחורי ולוגו" data-src="cars/eqes-3.jpg" data-pos="50% 35%" data-alt="מרצדס EQE SUV בצבע שחור, פנס אחורי ולוגו"><img src="cars/thumbs/eqes-3.jpg" alt="" loading="lazy" style="object-position:50% 35%"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Mercedes EQE 350 SUV</h2>
+              <p class="trim">4MATIC · Electric · 288 hp</p>
+            </div>
+            <p class="price">295,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2024</dd></div>
+            <div><dt>ק״מ</dt><dd>48,000</dd></div>
+            <div><dt>יד</dt><dd>2</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>חשמלי</dd></div>
+            <div><dt>הספק</dt><dd>288 כ״ס</dd></div>
+            <div><dt>הנעה</dt><dd>כפולה · <bdi>4MATIC</bdi></dd></div>
+            <div><dt>צבע</dt><dd>שחור</dd></div>
+            <div><dt>טסט עד</dt><dd>10/2027</dd></div>
+            <div><dt>סוללה</dt><dd>90.6 קוט״ש</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>מומנט</span><span>765 ניוטון־מטר</span></li>
+              <li><span>טעינה מהירה</span><span>עד 170 קילוואט</span></li>
+              <li><span>בעלות מקורית</span><span>ייבוא אישי</span></li>
+              <li><span>עלייה לכביש</span><span>01/2024</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+              <li>פס תאורה קדמי</li>
+              <li>לוגו מואר</li>
+              <li>פס תאורה אחורי</li>
+              <li>חישוקים שחורים</li>
+            </ul>
+            <p class="note">רכב שטח חשמלי מבית מרצדס, בייצור ארה״ב. טסט אחרון בוצע באוקטובר 2025.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%9E%D7%A8%D7%A6%D7%93%D7%A1%20EQE%20SUV%202024%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+      <!-- Mercedes-AMG EQE 43 4MATIC · seller's details via the user; specs from EQE 43 4MATIC (2022-2024) spec sheets -->
+
+      <li class="car">
+        <div class="gallery">
+          <img class="main" loading="lazy" decoding="async" src="cars/eqe43-1.jpg" alt="מרצדס AMG EQE 43 בצבע שחור, מבט מלפנים" width="738" height="985">
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="מבט מלפנים" data-src="cars/eqe43-1.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מבט מלפנים"><img src="cars/thumbs/eqe43-1.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מהצד" data-src="cars/eqe43-2.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מבט מהצד"><img src="cars/thumbs/eqe43-2.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מבט מאחור" data-src="cars/eqe43-3.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מבט מאחור"><img src="cars/thumbs/eqe43-3.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מכסה מנוע וגריל AMG" data-src="cars/eqe43-4.jpg" data-pos="50% 60%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מכסה מנוע וגריל AMG"><img src="cars/thumbs/eqe43-4.jpg" alt="" loading="lazy" style="object-position:50% 60%"></button>
+            <button type="button" aria-pressed="false" aria-label="תא מטען ופנסים אחוריים" data-src="cars/eqe43-5.jpg" data-pos="50% 60%" data-alt="מרצדס AMG EQE 43 בצבע שחור, תא מטען ופנסים אחוריים"><img src="cars/thumbs/eqe43-5.jpg" alt="" loading="lazy" style="object-position:50% 60%"></button>
+            <button type="button" aria-pressed="false" aria-label="תא הנהג" data-src="cars/eqe43-6.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, תא הנהג"><img src="cars/thumbs/eqe43-6.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="הגה AMG ולוח מחוונים" data-src="cars/eqe43-8.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, הגה AMG ולוח מחוונים"><img src="cars/thumbs/eqe43-8.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מסכים וקונסולת קרבון" data-src="cars/eqe43-9.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מסכים וקונסולת קרבון"><img src="cars/thumbs/eqe43-9.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="תאורת אווירה" data-src="cars/eqe43-10.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, תאורת אווירה"><img src="cars/thumbs/eqe43-10.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מושבי AMG" data-src="cars/eqe43-11.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מושבי AMG"><img src="cars/thumbs/eqe43-11.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+            <button type="button" aria-pressed="false" aria-label="מושב אחורי" data-src="cars/eqe43-7.jpg" data-pos="50% 50%" data-alt="מרצדס AMG EQE 43 בצבע שחור, מושב אחורי"><img src="cars/thumbs/eqe43-7.jpg" alt="" loading="lazy" style="object-position:50% 50%"></button>
+          </div>
+        </div>
+        <div class="car-body">
+          <div class="car-head">
+            <div>
+              <h2 class="model">Mercedes-AMG EQE 43</h2>
+              <p class="trim">4MATIC · Electric · 476 hp</p>
+            </div>
+            <p class="price">400,000 ₪</p>
+          </div>
+          <dl class="specs">
+            <div><dt>שנה</dt><dd>2022</dd></div>
+            <div><dt>ק״מ</dt><dd>45,000</dd></div>
+            <div><dt>יד</dt><dd>1</dd></div>
+          </dl>
+          <dl class="key-specs">
+            <div><dt>מנוע</dt><dd>חשמלי</dd></div>
+            <div><dt>הספק</dt><dd>476 כ״ס</dd></div>
+            <div><dt>הנעה</dt><dd>כפולה · <bdi>4MATIC</bdi></dd></div>
+            <div><dt>צבע</dt><dd>שחור</dd></div>
+            <div><dt>סוללה</dt><dd>90.6 קוט״ש</dd></div>
+            <div><dt>0–100 קמ״ש</dt><dd>4.2 שניות</dd></div>
+          </dl>
+          <details class="more">
+            <summary>כל הפרטים והאבזור</summary>
+            <ul class="details">
+              <li><span>מומנט</span><span>858 ניוטון־מטר</span></li>
+              <li><span>טעינה מהירה</span><span>עד 170 קילוואט</span></li>
+              <li><span>מהירות מרבית</span><span>210 קמ״ש</span></li>
+              <li><span>בעלות מקורית</span><span>ייבוא אישי</span></li>
+            </ul>
+            <ul class="features" aria-label="אבזור">
+                <li>שלושה מסכים מצד לצד</li>
+              <li>מושבי AMG עם זיכרון</li>
+              <li>חימום ואוורור במושבים</li>
+              <li>תאורת אווירה</li>
+              <li>עיטורי קרבון</li>
+              <li>הגה AMG עם בוררי מצבי נהיגה</li>
+              <li>גריל AMG</li>
+              <li>חישוקי AMG</li>
+            </ul>
+            <p class="note">הגיע ישירות מחטיבת AMG בגרמניה, שם שימש כרכב תצוגה עם השקת הדגם באביב 2022, ולכן כולל כמעט את כל האופציות האפשריות. רשימת האבזור המלאה זמינה לפי בקשה.</p>
+          </details>
+          <a class="cta" href="https://wa.me/972523748060?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%9E%D7%A8%D7%A6%D7%93%D7%A1%20AMG%20EQE%2043%20%D7%A9%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            לפרטים בוואטסאפ
+          </a>
+        </div>
+      </li>
+    </ul>
+  </main>
+
+  <footer class="site-foot">
+    <p class="disclaimer">הפרטים על הרכבים נמסרו על ידי בעליהם והושלמו ממאגרי משרד התחבורה וממפרטי היצרן. ייתכנו טעויות או שינויים, והמחירים אינם הצעה מחייבת. לפני רכישה מומלץ לבצע בדיקה במכון מוסמך.</p>
+    <div class="foot-row">
+      <a href="tel:+972523748060" dir="ltr">052-374-8060</a>
+      <nav aria-label="מידע משפטי">
+        <a href="list-your-car.html" data-open-sell>העלאת רכב לאתר</a>
+        <a href="terms.html">תנאי שימוש</a>
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="accessibility.html">הצהרת נגישות</a>
+      </nav>
+    </div>
+    <p class="copy">© <span id="year"></span> Silverstein</p>
   </footer>
 
-</main>
-<script>
-  document.getElementById("y").textContent = new Date().getFullYear();
-  // respect reduced-motion: show the still frame instead of the looping video
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const v = document.querySelector(".banner video");
-    v.removeAttribute("autoplay"); v.pause();
-  }
-</script>
+  <script>
+    // "list your car" panel: smooth open/close on top of the page
+    (function () {
+      const dlg = document.getElementById("sell");
+      if (!dlg || typeof dlg.showModal !== "function") return;   // old browsers keep the plain link
+      let opener = null;
+      const open = e => {
+        e.preventDefault();
+        opener = e.currentTarget;
+        dlg.showModal();
+        document.body.classList.add("no-scroll");
+        void dlg.offsetHeight;            // commit the closed state so the transition runs
+        dlg.classList.add("is-open");
+      };
+      const close = () => {
+        if (!dlg.open) return;
+        dlg.classList.remove("is-open");
+        const done = () => { dlg.close(); document.body.classList.remove("no-scroll"); opener && opener.focus(); };
+        matchMedia("(prefers-reduced-motion: reduce)").matches ? done() : setTimeout(done, 320);
+      };
+      document.querySelectorAll("[data-open-sell]").forEach(a => a.addEventListener("click", open));
+      dlg.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", close));
+      dlg.addEventListener("click", e => { if (e.target === dlg) close(); });   // tap on the dimmed area
+      dlg.addEventListener("cancel", e => { e.preventDefault(); close(); });    // Esc key
+    })();
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    // clicking a thumbnail swaps the main photo of that card
+    document.querySelectorAll(".car").forEach(card => {
+      const main = card.querySelector(".main");
+      card.querySelectorAll(".thumbs button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          main.src = btn.dataset.src;
+          main.alt = btn.dataset.alt;
+          main.style.objectPosition = btn.dataset.pos || "";
+          card.querySelectorAll(".thumbs button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+        });
+      });
+    });
+  </script>
 </body>
 </html>
