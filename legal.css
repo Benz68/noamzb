@@ -1,7 +1,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; background: #FFFFFF; }
 body {
-  background: #FFFFFF;
+  background: transparent;
   color: #0E0F11;
   font: 300 17px/1.75 "Heebo", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -35,3 +35,18 @@ footer {
   display: flex; flex-wrap: wrap; gap: 8px 20px;
   font-size: 15px; color: #6E7379;
 }
+
+/* slanted black band; bg.js slides it from the right third to the left third as the page scrolls */
+:root { --band: 77%; }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1;
+  background: #0E0F11;
+  clip-path: polygon(
+    calc(var(--band) + 10%) 0, calc(var(--band) + 43%) 0,
+    calc(var(--band) + 23%) 100%, calc(var(--band) - 10%) 100%
+  );
+}
+header { position: relative; z-index: 1; color: #FFFFFF; mix-blend-mode: difference; padding-bottom: 32px; }
+main { background: #FFFFFF; border: 1px solid #D9DCDF; margin-top: 0; margin-bottom: 0; padding-inline: clamp(18px, 4vw, 40px); }
+footer { background: #FFFFFF; border: 1px solid #D9DCDF; border-top: 0; margin-bottom: 40px; padding-inline: clamp(18px, 4vw, 40px); }
+@media (max-width: 760px) { main, footer { margin-inline: 12px; } }
