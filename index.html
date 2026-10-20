@@ -33,16 +33,28 @@
   html { -webkit-text-size-adjust: 100%; }
   body {
     min-height: 100vh;
-    background: var(--bg);
+    background: transparent;
     color: var(--ink);
     font-family: "Heebo", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
+  /* half black, half white, split on a diagonal that stays put while the page scrolls */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(to bottom right, #0E0F11 0 50%, #FFFFFF 50% 100%);
+  }
   header {
+    position: relative; z-index: 1;
     padding: clamp(40px, 8vh, 72px) 16px 0;
     text-align: center;
+    /* the header is drawn in white and inverted against the background,
+       so every letter reads white on the black half and black on the white half */
+    --ink: #FFFFFF; --muted: #A4AAB0; --rule: #6A7076;
+    color: var(--ink);
+    mix-blend-mode: difference;
   }
+  .rule { background: var(--ink) !important; }
   /* sellers' entry point: a clear button under the tagline, before the cars */
   .list-cta {
     display: inline-flex; align-items: center; gap: 12px;
@@ -55,8 +67,8 @@
   }
   .list-cta small { font-size: 14px; color: var(--muted); font-weight: 300; transition: color .2s; }
   .list-cta .arrow { font-size: 18px; line-height: 1; }
-  .list-cta:hover, .list-cta:focus-visible { background: var(--ink); color: #fff; }
-  .list-cta:hover small, .list-cta:focus-visible small { color: #C9CDD1; }
+  .list-cta:hover, .list-cta:focus-visible { background: var(--ink); color: #000; }
+  .list-cta:hover small, .list-cta:focus-visible small { color: #36393D; }
   @media (max-width: 520px) {
     .list-cta { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 10px; width: 100%; max-width: 360px; margin-inline: auto; margin-top: 26px; }
   }
@@ -156,7 +168,7 @@
   a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
   /* ---------- Pages of cars ---------- */
-  .pager { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 40px; flex-wrap: wrap; }
+  .pager { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 40px auto 0; flex-wrap: wrap; width: fit-content; padding: 10px; background: var(--bg); border: 1px solid var(--rule); }
   .pager button {
     min-width: 44px; height: 44px; padding: 0 14px;
     border: 1px solid var(--rule); background: var(--bg); color: var(--ink);
@@ -181,8 +193,8 @@
     transition: border-color .2s, color .2s;
   }
   .soc svg { width: 20px; height: 20px; flex: none; }
-  .soc-ig:hover, .soc-ig:focus-visible { color: #C13584; border-color: #C13584; }
-  .soc-tt:hover, .soc-tt:focus-visible { color: #000; border-color: #000; }
+  .soc-ig:hover, .soc-ig:focus-visible { border-color: var(--ink); }
+  .soc-tt:hover, .soc-tt:focus-visible { border-color: var(--ink); }
   @media (max-width: 380px) { .soc span { font-size: 13px; } .soc { padding: 10px 12px; } }
 
   /* ---------- "List your car" panel ---------- */
@@ -242,6 +254,7 @@
   /* ---------- Footer ---------- */
   .site-foot {
     max-width: 1200px; margin: 0 auto;
+    background: var(--bg);
     padding: 28px 16px 48px;
     border-top: 1px solid var(--rule);
     font-size: 14px; color: var(--muted);
@@ -844,7 +857,7 @@
               <h2 class="model">Range Rover Sport</h2>
               <p class="trim">P400e PHEV · HSE Dynamic · 404 hp</p>
             </div>
-            <p class="price ask">מחיר בוואטסאפ</p>
+            <p class="price">260,000 ₪</p>
           </div>
           <dl class="specs">
             <div><dt>שנה</dt><dd>2020</dd></div>
