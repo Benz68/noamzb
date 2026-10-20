@@ -30,7 +30,7 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { -webkit-text-size-adjust: 100%; background: #FFFFFF; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
     min-height: 100vh;
     background: transparent;
@@ -39,15 +39,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* slanted black band; bg.js slides it from the right third to the left third as the page scrolls */
-  :root { --band: 77%; }
+  /* black corner at the top right, white for the rest, split on a diagonal that stays put while the page scrolls */
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -1;
-    background: #0E0F11;
-    clip-path: polygon(
-      calc(var(--band) + 10%) 0, calc(var(--band) + 43%) 0,
-      calc(var(--band) + 23%) 100%, calc(var(--band) - 10%) 100%
-    );
+    background: linear-gradient(to bottom left, #0E0F11 0 34%, #FFFFFF 34% 100%);
   }
   header {
     position: relative; z-index: 1;
@@ -928,7 +923,6 @@
     <p class="copy">© <span id="year"></span> Silverstein</p>
   </footer>
 
-  <script src="bg.js"></script>
   <script>
     // "list your car" panel: smooth open/close on top of the page
     (function () {
