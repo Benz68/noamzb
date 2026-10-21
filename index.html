@@ -107,6 +107,22 @@
   main { max-width: 1200px; margin: 0 auto; padding: clamp(32px, 6vh, 56px) 16px 80px; }
   .cars { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 28px; }
   .car { border: 1px solid var(--rule); background: var(--bg); display: flex; flex-direction: column; }
+  /* the car under the mouse grows a little and lights up (computers only) */
+  @media (hover: hover) {
+    .car {
+      position: relative;
+      transition: transform .3s cubic-bezier(.2,.7,.1,1), box-shadow .3s, border-color .3s;
+    }
+    .car:hover, .car:focus-within {
+      z-index: 2;
+      transform: scale(1.03);
+      border-color: #FFFFFF;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.9), 0 0 28px rgba(255,255,255,.55), 0 24px 50px -18px rgba(14,15,17,.45);
+    }
+    .car .main { transition: filter .3s; }
+    .car:hover .main { filter: brightness(1.08); }
+  }
+  @media (prefers-reduced-motion: reduce) { .car:hover, .car:focus-within { transform: none; } }
 
   .gallery { position: relative; }
   .gallery .main { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #F1F2F3; }
