@@ -39,10 +39,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* black corner at the top right, white for the rest, split on a diagonal that stays put while the page scrolls */
+  /* half black (top right), half white, split on a diagonal that stays put while the page scrolls */
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -1;
-    background: linear-gradient(to bottom left, #0E0F11 0 34%, #FFFFFF 34% 100%);
+    background: linear-gradient(to bottom left, #0E0F11 0 50%, #FFFFFF 50% 100%);
   }
   header {
     position: relative; z-index: 1;
