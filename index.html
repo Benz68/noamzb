@@ -59,16 +59,25 @@
   .list-cta {
     display: inline-flex; align-items: center; gap: 12px;
     margin-top: 30px;
-    padding: 14px 22px;
-    border: 1px solid var(--ink);
+    padding: 12px 18px;
     color: var(--ink); text-decoration: none;
     font-size: 16px; font-weight: 400;
-    transition: background .2s, color .2s;
+    opacity: .72;
+    transition: opacity .25s, text-shadow .25s;
   }
   .list-cta small { font-size: 14px; color: var(--muted); font-weight: 300; transition: color .2s; }
   .list-cta .arrow { font-size: 18px; line-height: 1; }
-  .list-cta:hover, .list-cta:focus-visible { background: var(--ink); color: #000; }
-  .list-cta:hover small, .list-cta:focus-visible small { color: #36393D; }
+  /* no frames: the links sit slightly dimmed and light up under the mouse */
+  .list-cta:hover, .list-cta:focus-visible, .soc:hover, .soc:focus-visible {
+    opacity: 1;
+    text-shadow: 0 0 14px rgba(255, 255, 255, .65);
+  }
+  .list-cta:hover small, .list-cta:focus-visible small { color: var(--ink); }
+  .list-cta .arrow { transition: transform .25s; }
+  .list-cta:hover .arrow { transform: translateX(-4px); }
+  .soc svg { transition: filter .25s; }
+  .soc:hover svg, .soc:focus-visible svg { filter: drop-shadow(0 0 6px rgba(255, 255, 255, .7)); }
+  @media (hover: none) { .list-cta, .soc { opacity: 1; } }   /* phones have no hover, so show them at full strength */
   @media (max-width: 520px) {
     .list-cta { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 10px; width: 100%; max-width: 360px; margin-inline: auto; margin-top: 26px; }
   }
@@ -186,16 +195,14 @@
   .follow-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
   .soc {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 16px; min-height: 44px;
-    border: 1px solid var(--rule);
+    padding: 10px 12px; min-height: 44px;
     color: var(--ink); text-decoration: none;
     font-size: 14px;
-    transition: border-color .2s, color .2s;
+    opacity: .72;
+    transition: opacity .25s, text-shadow .25s;
   }
   .soc svg { width: 20px; height: 20px; flex: none; }
-  .soc-ig:hover, .soc-ig:focus-visible { border-color: var(--ink); }
-  .soc-tt:hover, .soc-tt:focus-visible { border-color: var(--ink); }
-  @media (max-width: 380px) { .soc span { font-size: 13px; } .soc { padding: 10px 12px; } }
+  @media (max-width: 380px) { .soc span { font-size: 13px; } .soc { padding: 10px 8px; } }
 
   /* ---------- "List your car" panel ---------- */
   .sell {
