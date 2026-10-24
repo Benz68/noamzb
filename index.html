@@ -176,17 +176,31 @@
   .car[data-deal] .price { color: #B3121B; font-weight: 700; }
 
   /* brand filter */
-  .brands { display: flex; align-items: center; gap: 8px; margin: 0 0 24px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
-  .brands-label { font-size: 14px; color: var(--muted); white-space: nowrap; margin-left: 4px; }
-  .brands button {
-    flex: 0 0 auto; height: 40px; padding: 0 16px;
+  .brands { position: relative; width: fit-content; margin: 0 0 24px; z-index: 5; }
+  .brands-toggle {
+    display: flex; align-items: center; gap: 10px;
+    height: 44px; padding: 0 16px;
     border: 1px solid var(--rule); background: var(--bg); color: var(--ink);
-    font: 400 15px "Heebo", sans-serif; cursor: pointer; white-space: nowrap;
-    transition: border-color .2s, background .2s, color .2s;
+    font: 400 15px "Heebo", sans-serif; cursor: pointer;
   }
-  .brands button:hover { border-color: var(--ink); }
-  .brands button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .brands button small { font-size: 12px; opacity: .65; margin-right: 4px; }
+  .brands-toggle:hover { border-color: var(--ink); }
+  .brands-toggle::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+  .brands-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
+  .brands-list {
+    position: absolute; top: calc(100% + 6px); right: 0; min-width: 220px;
+    list-style: none; margin: 0; padding: 6px 0;
+    background: var(--bg); border: 1px solid var(--rule);
+    box-shadow: 0 18px 40px -16px rgba(14,15,17,.35);
+  }
+  .brands-list[hidden] { display: none; }
+  .brands-list button {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    width: 100%; padding: 11px 18px; border: 0; background: none; color: var(--ink);
+    font: 400 15px "Heebo", sans-serif; cursor: pointer; text-align: right;
+  }
+  .brands-list button:hover { background: #F1F2F3; }
+  .brands-list button[aria-checked="true"] { font-weight: 700; }
+  .brands-list small { font-size: 13px; color: var(--muted); }
 
   .gallery .main { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #F1F2F3; }
   .thumbs { display: flex; gap: 6px; padding: 6px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
@@ -406,7 +420,10 @@
   </dialog>
 
   <main>
-    <div class="brands" id="brands" role="group" aria-label="סוג רכב" hidden></div>
+    <div class="brands" id="brands" hidden>
+      <button type="button" class="brands-toggle" aria-expanded="false" aria-controls="brands-list">סוג רכב</button>
+      <ul class="brands-list" id="brands-list" role="menu" aria-label="סוג רכב" hidden></ul>
+    </div>
     <ul class="cars">
       <!-- BMW X4 · Yad2 listing n82m6j3c + Ministry of Transport model data (X4 xDrive20i Executive 2024) -->
 
@@ -1004,7 +1021,7 @@
           </a>
         </div>
       </li>
-      <!-- Jeep Wrangler Unlimited Rubicon 392 (2023) · Yad2 listing xh04w47u (details verified there against the MoT registry); price set by the user (lowered from 440,000 to 335,000 on 2026-10-24). data-deal pins it first with the "best price" tag -->
+      <!-- Jeep Wrangler Unlimited Rubicon 392 (2023) · Yad2 listing xh04w47u (details verified there against the MoT registry); price set by the user (lowered from 440,000 to 435,000 on 2026-10-24). data-deal pins it first with the "best price" tag -->
       <li class="car" data-deal>
         <div class="gallery">
           <span class="deal-tag">המחיר הכי משתלם</span>
@@ -1025,7 +1042,7 @@
               <h2 class="model">Jeep Wrangler Rubicon 392</h2>
               <p class="trim">6.4 HEMI V8 · 470 hp</p>
             </div>
-            <p class="price">335,000 ₪</p>
+            <p class="price">435,000 ₪</p>
           </div>
           <dl class="specs">
             <div><dt>שנה</dt><dd>2023</dd></div>
@@ -1558,26 +1575,35 @@
       };
       const hashFor = (brand, page) => (brand ? "#" + brand : "") + (page > 1 ? (brand ? "-" : "#") + "page-" + page : "");
 
-      const label = document.createElement("span");
-      label.className = "brands-label"; label.textContent = "סוג רכב:";
-      bar.appendChild(label);
-      const chip = (key, text, n) => {
+      // one "סוג רכב" button that opens a short list
+      const toggle = bar.querySelector(".brands-toggle");
+      const menu = bar.querySelector(".brands-list");
+      const names = { "": "כל הרכבים" };
+      const item = (key, text, n) => {
+        names[key] = text;
+        const li = document.createElement("li");
         const b = document.createElement("button");
-        b.type = "button"; b.dataset.brand = key;
-        b.innerHTML = text + (n ? " <small>" + n + "</small>" : "");
-        b.addEventListener("click", () => go(key, 1));
-        bar.appendChild(b);
+        b.type = "button"; b.setAttribute("role", "menuitemradio"); b.dataset.brand = key;
+        b.innerHTML = "<span>" + text + "</span><small>" + n + "</small>";
+        b.addEventListener("click", () => { closeMenu(); go(key, 1); });
+        li.appendChild(b); menu.appendChild(li);
       };
-      chip("", "הכל", all.length);
-      BRANDS.filter(([, key]) => counts[key]).forEach(([, key, he]) => chip(key, he, counts[key]));
-      Object.keys(counts).filter(k => !BRANDS.some(([, key]) => key === k)).forEach(k => chip(k, k, counts[k]));
+      item("", "כל הרכבים", all.length);
+      BRANDS.filter(([, key]) => counts[key]).forEach(([, key, he]) => item(key, he, counts[key]));
+      Object.keys(counts).filter(k => !BRANDS.some(([, key]) => key === k)).forEach(k => item(k, k, counts[k]));
+      const openMenu = () => { menu.hidden = false; toggle.setAttribute("aria-expanded", "true"); };
+      const closeMenu = () => { menu.hidden = true; toggle.setAttribute("aria-expanded", "false"); };
+      toggle.addEventListener("click", () => menu.hidden ? openMenu() : closeMenu());
+      document.addEventListener("click", e => { if (!bar.contains(e.target)) closeMenu(); });
+      document.addEventListener("keydown", e => { if (e.key === "Escape" && !menu.hidden) { closeMenu(); toggle.focus(); } });
       bar.hidden = false;
 
       function show(brand, n, scroll) {
         const cars = all.filter(c => !brand || c.dataset.brand === brand);
         const pages = Math.max(1, Math.ceil(cars.length / PER_PAGE));
         n = Math.min(pages, Math.max(1, n));
-        bar.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.brand === brand));
+        menu.querySelectorAll("button").forEach(b => b.setAttribute("aria-checked", b.dataset.brand === brand));
+        toggle.textContent = brand ? "סוג רכב: " + names[brand] : "סוג רכב";
         all.forEach(c => { c.hidden = true; });
         cars.forEach((c, i) => { c.hidden = Math.floor(i / PER_PAGE) + 1 !== n; });
         pager.hidden = pages < 2;
