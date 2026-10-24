@@ -176,31 +176,41 @@
   .car[data-deal] .price { color: #B3121B; font-weight: 700; }
 
   /* brand filter */
-  .brands { position: relative; width: fit-content; margin: 0 0 24px; z-index: 5; }
+  /* no stacking context here, so the button can invert against the diagonal like the header */
+  .brands { position: relative; width: fit-content; margin: 0 0 28px; }
+  /* frameless like the header links: white, inverted against the background, a thin line under it */
   .brands-toggle {
-    display: flex; align-items: center; gap: 10px;
-    height: 44px; padding: 0 16px;
-    border: 1px solid var(--rule); background: var(--bg); color: var(--ink);
-    font: 400 15px "Heebo", sans-serif; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 2px 9px; min-height: 44px;
+    border: 0; border-bottom: 1px solid currentColor; background: none;
+    color: #FFFFFF; mix-blend-mode: difference;
+    font: 300 15px "Heebo", sans-serif; letter-spacing: .08em;
+    cursor: pointer; opacity: .78;
+    transition: opacity .25s, text-shadow .25s;
   }
-  .brands-toggle:hover { border-color: var(--ink); }
+  .brands-toggle:hover, .brands-toggle:focus-visible, .brands-toggle[aria-expanded="true"] {
+    opacity: 1; text-shadow: 0 0 14px rgba(255, 255, 255, .65);
+  }
+  @media (hover: none) { .brands-toggle { opacity: 1; } }
   .brands-toggle::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
   .brands-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
   .brands-list {
-    position: absolute; top: calc(100% + 6px); right: 0; min-width: 220px;
+    position: absolute; top: calc(100% + 10px); right: 0; z-index: 5; min-width: 200px;
     list-style: none; margin: 0; padding: 6px 0;
-    background: var(--bg); border: 1px solid var(--rule);
-    box-shadow: 0 18px 40px -16px rgba(14,15,17,.35);
+    background: var(--ink); border: 1px solid #2A2D31;
+    box-shadow: 0 20px 40px -18px rgba(14,15,17,.55);
   }
   .brands-list[hidden] { display: none; }
   .brands-list button {
-    display: flex; justify-content: space-between; align-items: center; gap: 16px;
-    width: 100%; padding: 11px 18px; border: 0; background: none; color: var(--ink);
-    font: 400 15px "Heebo", sans-serif; cursor: pointer; text-align: right;
+    display: flex; justify-content: space-between; align-items: center; gap: 18px;
+    width: 100%; padding: 10px 18px; border: 0; background: none; color: rgba(255,255,255,.72);
+    font: 300 15px "Heebo", sans-serif; letter-spacing: .04em; cursor: pointer; text-align: right;
+    transition: color .2s, background .2s;
   }
-  .brands-list button:hover { background: #F1F2F3; }
-  .brands-list button[aria-checked="true"] { font-weight: 700; }
-  .brands-list small { font-size: 13px; color: var(--muted); }
+  .brands-list button:hover, .brands-list button:focus-visible { color: #fff; background: rgba(255,255,255,.06); }
+  .brands-list button[aria-checked="true"] { color: #fff; font-weight: 400; }
+  .brands-list button[aria-checked="true"] span::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: currentColor; margin-left: 10px; vertical-align: middle; }
+  .brands-list small { font-size: 12px; color: rgba(255,255,255,.45); letter-spacing: .06em; }
 
   .gallery .main { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #F1F2F3; }
   .thumbs { display: flex; gap: 6px; padding: 6px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
