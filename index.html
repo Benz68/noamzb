@@ -165,6 +165,29 @@
     font-size: 13px; padding: 5px 10px; letter-spacing: .02em;
     pointer-events: none;
   }
+  /* pinned "best price" car */
+  .deal-tag {
+    position: absolute; top: 10px; right: 10px; z-index: 1;
+    background: #B3121B; color: #fff;
+    font-size: 13px; font-weight: 700; padding: 6px 12px; letter-spacing: .03em;
+    pointer-events: none;
+  }
+  .car[data-deal] { border-color: #B3121B; box-shadow: 0 0 0 1px #B3121B; }
+  .car[data-deal] .price { color: #B3121B; font-weight: 700; }
+
+  /* brand filter */
+  .brands { display: flex; align-items: center; gap: 8px; margin: 0 0 24px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+  .brands-label { font-size: 14px; color: var(--muted); white-space: nowrap; margin-left: 4px; }
+  .brands button {
+    flex: 0 0 auto; height: 40px; padding: 0 16px;
+    border: 1px solid var(--rule); background: var(--bg); color: var(--ink);
+    font: 400 15px "Heebo", sans-serif; cursor: pointer; white-space: nowrap;
+    transition: border-color .2s, background .2s, color .2s;
+  }
+  .brands button:hover { border-color: var(--ink); }
+  .brands button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .brands button small { font-size: 12px; opacity: .65; margin-right: 4px; }
+
   .gallery .main { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #F1F2F3; }
   .thumbs { display: flex; gap: 6px; padding: 6px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
   .thumbs button {
@@ -383,6 +406,7 @@
   </dialog>
 
   <main>
+    <div class="brands" id="brands" role="group" aria-label="סוג רכב" hidden></div>
     <ul class="cars">
       <!-- BMW X4 · Yad2 listing n82m6j3c + Ministry of Transport model data (X4 xDrive20i Executive 2024) -->
 
@@ -980,9 +1004,10 @@
           </a>
         </div>
       </li>
-      <!-- Jeep Wrangler Unlimited Rubicon 392 (2023) · Yad2 listing xh04w47u (details verified there against the MoT registry); price set by the user -->
-      <li class="car">
+      <!-- Jeep Wrangler Unlimited Rubicon 392 (2023) · Yad2 listing xh04w47u (details verified there against the MoT registry); price set by the user (lowered from 440,000 to 335,000 on 2026-10-24). data-deal pins it first with the "best price" tag -->
+      <li class="car" data-deal>
         <div class="gallery">
+          <span class="deal-tag">המחיר הכי משתלם</span>
           <img class="main" loading="lazy" decoding="async" src="cars/jeep3-1.jpg" alt="ג׳יפ רנגלר רוביקון 392 בצבע אפור, מבט מלפנים בזווית" width="1050" height="1232" style="object-position:50% 50%">
           <div class="thumbs">
             <button type="button" aria-pressed="true" aria-label="מבט מלפנים בזווית" data-src="cars/jeep3-1.jpg" data-pos="50% 50%" data-alt="ג׳יפ רנגלר רוביקון 392 בצבע אפור, מבט מלפנים בזווית"><img src="cars/thumbs/jeep3-1.jpg" alt="" loading="lazy" style="object-position:50% 60%"></button>
@@ -1000,7 +1025,7 @@
               <h2 class="model">Jeep Wrangler Rubicon 392</h2>
               <p class="trim">6.4 HEMI V8 · 470 hp</p>
             </div>
-            <p class="price">440,000 ₪</p>
+            <p class="price">335,000 ₪</p>
           </div>
           <dl class="specs">
             <div><dt>שנה</dt><dd>2023</dd></div>
@@ -1504,38 +1529,84 @@
     })();
 
     document.getElementById("year").textContent = new Date().getFullYear();
-    // show the cars six at a time; the page number lives in the address (#page-2) so it can be shared
+    // order: the pinned "best price" car first, then newest first (new cards are added at the end of the list).
+    // a brand filter on top; six cars per page. Brand and page live in the address (#lexus-page-2) so they can be shared
     (function () {
       const PER_PAGE = 6;
-      const cars = [...document.querySelectorAll(".cars > .car")];
+      const list = document.querySelector(".cars");
+      const all = [...list.querySelectorAll(":scope > .car")].reverse();
+      all.sort((a, b) => b.hasAttribute("data-deal") - a.hasAttribute("data-deal"));
+      all.forEach(c => list.appendChild(c));
+
+      const BRANDS = [["Range Rover", "range-rover", "ריינג׳ רובר"], ["Mercedes", "mercedes", "מרצדס"], ["BMW", "bmw", "ב.מ.וו"],
+        ["Jeep", "jeep", "ג׳יפ"], ["Lexus", "lexus", "לקסוס"], ["Porsche", "porsche", "פורשה"], ["Toyota", "toyota", "טויוטה"]];
+      const brandOf = c => {
+        const model = c.querySelector(".model").textContent.trim();
+        const hit = BRANDS.find(([en]) => model.startsWith(en));
+        return hit ? hit[1] : model.split(" ")[0].toLowerCase();
+      };
+      all.forEach(c => { c.dataset.brand = brandOf(c); });
+      const counts = {};
+      all.forEach(c => { counts[c.dataset.brand] = (counts[c.dataset.brand] || 0) + 1; });
+
+      const bar = document.getElementById("brands");
       const pager = document.getElementById("pager");
-      const pages = Math.ceil(cars.length / PER_PAGE);
-      if (pages < 2) return;
-      pager.hidden = false;
-      const fromHash = () => Math.min(pages, Math.max(1, parseInt((location.hash.match(/page-(\d+)/) || [])[1] || "1", 10)));
-      function show(n, scroll) {
+      const state = () => {
+        const h = location.hash;
+        const b = (h.match(/^#([a-z-]+?)(?:-page-\d+)?$/) || [])[1];
+        return { brand: b && b !== "page" && counts[b] ? b : "", page: parseInt((h.match(/page-(\d+)/) || [])[1] || "1", 10) };
+      };
+      const hashFor = (brand, page) => (brand ? "#" + brand : "") + (page > 1 ? (brand ? "-" : "#") + "page-" + page : "");
+
+      const label = document.createElement("span");
+      label.className = "brands-label"; label.textContent = "סוג רכב:";
+      bar.appendChild(label);
+      const chip = (key, text, n) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.dataset.brand = key;
+        b.innerHTML = text + (n ? " <small>" + n + "</small>" : "");
+        b.addEventListener("click", () => go(key, 1));
+        bar.appendChild(b);
+      };
+      chip("", "הכל", all.length);
+      BRANDS.filter(([, key]) => counts[key]).forEach(([, key, he]) => chip(key, he, counts[key]));
+      Object.keys(counts).filter(k => !BRANDS.some(([, key]) => key === k)).forEach(k => chip(k, k, counts[k]));
+      bar.hidden = false;
+
+      function show(brand, n, scroll) {
+        const cars = all.filter(c => !brand || c.dataset.brand === brand);
+        const pages = Math.max(1, Math.ceil(cars.length / PER_PAGE));
+        n = Math.min(pages, Math.max(1, n));
+        bar.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.brand === brand));
+        all.forEach(c => { c.hidden = true; });
         cars.forEach((c, i) => { c.hidden = Math.floor(i / PER_PAGE) + 1 !== n; });
+        pager.hidden = pages < 2;
         pager.innerHTML = "";
+        if (pages < 2) { if (scroll) scrollTop(); return; }
         const btn = (label, page, opts = {}) => {
           const b = document.createElement("button");
           b.type = "button"; b.textContent = label;
           if (opts.aria) b.setAttribute("aria-label", opts.aria);
           if (page === n && !opts.nav) b.setAttribute("aria-current", "page");
           if (opts.disabled) b.disabled = true;
-          b.addEventListener("click", () => go(page));
+          b.addEventListener("click", () => go(brand, page));
           pager.appendChild(b);
         };
         btn("→", n - 1, { nav: true, aria: "העמוד הקודם", disabled: n === 1 });
         for (let i = 1; i <= pages; i++) btn(String(i), i, { aria: "עמוד " + i });
         btn("←", n + 1, { nav: true, aria: "העמוד הבא", disabled: n === pages });
-        if (scroll) document.querySelector(".cars").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        if (scroll) scrollTop();
       }
-      function go(n) {
-        history.replaceState(null, "", n === 1 ? location.pathname : "#page-" + n);
-        show(n, true);
+      function scrollTop() {
+        bar.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
       }
-      show(fromHash(), false);
-      addEventListener("hashchange", () => show(fromHash(), true));
+      function go(brand, n) {
+        history.replaceState(null, "", hashFor(brand, n) || location.pathname);
+        show(brand, n, true);
+      }
+      const s = state();
+      show(s.brand, s.page, false);
+      addEventListener("hashchange", () => { const t = state(); show(t.brand, t.page, true); });
     })();
 
     // clicking a thumbnail swaps the main photo of that card
