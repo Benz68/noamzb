@@ -175,9 +175,27 @@
   .car[data-deal] { border-color: #B3121B; box-shadow: 0 0 0 1px #B3121B; }
   .car[data-deal] .price { color: #B3121B; font-weight: 700; }
 
+  /* cars / motorcycles switch, then the brand filter, on one row */
+  .filters { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 14px 28px; margin: 0 0 28px; }
+  .kinds { display: flex; gap: 22px; }
+  .kinds button {
+    padding: 8px 2px 9px; min-height: 44px;
+    border: 0; border-bottom: 1px solid transparent; background: none;
+    color: #FFFFFF; mix-blend-mode: difference;
+    font: 300 16px "Heebo", sans-serif; letter-spacing: .08em;
+    cursor: pointer; opacity: .55;
+    transition: opacity .25s, text-shadow .25s, border-color .25s;
+  }
+  .kinds button:hover, .kinds button:focus-visible { opacity: 1; text-shadow: 0 0 14px rgba(255, 255, 255, .65); }
+  .kinds button[aria-selected="true"] { opacity: 1; border-bottom-color: currentColor; font-weight: 400; }
+  .empty-kind { border: 1px solid var(--rule); background: var(--bg); padding: 40px 22px; text-align: center; }
+  .empty-kind h2 { font-family: "Michroma", sans-serif; font-size: 18px; letter-spacing: .08em; }
+  .empty-kind p { color: var(--muted); margin-top: 10px; line-height: 1.6; }
+  .empty-kind a { display: inline-block; margin-top: 18px; padding: 12px 20px; background: var(--ink); color: #fff; text-decoration: none; }
+  .empty-kind[hidden] { display: none; }
   /* brand filter */
   /* no stacking context here, so the button can invert against the diagonal like the header */
-  .brands { position: relative; width: fit-content; margin: 0 0 28px; }
+  .brands { position: relative; width: fit-content; }
   /* frameless like the header links: white, inverted against the background, a thin line under it */
   .brands-toggle {
     display: flex; align-items: center; gap: 12px;
@@ -290,7 +308,7 @@
   .pager button:hover { border-color: var(--ink); }
   .pager button[aria-current="page"] { background: var(--ink); color: #fff; border-color: var(--ink); }
   .pager button:disabled { opacity: .35; cursor: default; }
-  .car[hidden] { display: none; }
+  .car[hidden], .pager[hidden] { display: none; }
 
   /* ---------- Follow us ---------- */
   .follow { margin-top: 26px; }
@@ -394,7 +412,7 @@
     <div class="rule" aria-hidden="true"></div>
     <p class="tagline">שיווק רכבי יוקרה</p>
     <a class="list-cta" href="list-your-car.html" data-open-sell>
-      <small>יש לכם רכב יוקרה למכירה?</small>
+      <small>יש לכם רכב או אופנוע יוקרה למכירה?</small>
       <span>העלאת הרכב שלכם לאתר</span>
       <span class="arrow" aria-hidden="true">←</span>
     </a>
@@ -430,9 +448,20 @@
   </dialog>
 
   <main>
-    <div class="brands" id="brands" hidden>
-      <button type="button" class="brands-toggle" aria-expanded="false" aria-controls="brands-list">סוג רכב</button>
-      <ul class="brands-list" id="brands-list" role="menu" aria-label="סוג רכב" hidden></ul>
+    <div class="filters">
+      <div class="kinds" id="kinds" role="tablist" aria-label="רכבים או אופנועים" hidden>
+        <button type="button" role="tab" data-kind="car" aria-selected="true">רכבים</button>
+        <button type="button" role="tab" data-kind="moto" aria-selected="false">אופנועים</button>
+      </div>
+      <div class="brands" id="brands" hidden>
+        <button type="button" class="brands-toggle" aria-expanded="false" aria-controls="brands-list">סוג רכב</button>
+        <ul class="brands-list" id="brands-list" role="menu" aria-label="סוג רכב" hidden></ul>
+      </div>
+    </div>
+    <div class="empty-kind" id="empty-kind" hidden>
+      <h2>MOTORCYCLES</h2>
+      <p>בקרוב יעלו כאן אופנועי יוקרה למכירה.<br>יש לכם אופנוע למכירה? אנחנו משווקים גם אופנועים, באותם תנאים.</p>
+      <a href="list-your-car.html" data-open-sell>העלאת האופנוע שלכם לאתר</a>
     </div>
     <ul class="cars">
       <!-- BMW X4 · Yad2 listing n82m6j3c + Ministry of Transport model data (X4 xDrive20i Executive 2024) -->
@@ -1843,7 +1872,8 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
     // order: the pinned "best price" car first, then newest first (new cards are added at the end of the list).
-    // a brand filter on top; six cars per page. Brand and page live in the address (#lexus-page-2) so they can be shared
+    // a cars/motorcycles switch (cards with data-kind="moto" are motorcycles), a brand filter, six per page.
+    // Kind, brand and page live in the address (#moto, #lexus-page-2, #moto-ducati) so they can be shared
     (function () {
       const PER_PAGE = 6;
       const list = document.querySelector(".cars");
@@ -1852,54 +1882,80 @@
       all.forEach(c => list.appendChild(c));
 
       const BRANDS = [["Range Rover", "range-rover", "ריינג׳ רובר"], ["Mercedes", "mercedes", "מרצדס"], ["BMW", "bmw", "ב.מ.וו"],
-        ["Jeep", "jeep", "ג׳יפ"], ["Lexus", "lexus", "לקסוס"], ["Porsche", "porsche", "פורשה"], ["Toyota", "toyota", "טויוטה"]];
+        ["Jeep", "jeep", "ג׳יפ"], ["Lexus", "lexus", "לקסוס"], ["Porsche", "porsche", "פורשה"], ["Toyota", "toyota", "טויוטה"],
+        ["Ducati", "ducati", "דוקאטי"], ["Harley", "harley", "הארלי־דייווידסון"], ["Kawasaki", "kawasaki", "קוואסאקי"],
+        ["Yamaha", "yamaha", "ימאהה"], ["Honda", "honda", "הונדה"], ["KTM", "ktm", "KTM"], ["Triumph", "triumph", "טריומף"],
+        ["Suzuki", "suzuki", "סוזוקי"], ["Aprilia", "aprilia", "אפריליה"], ["MV Agusta", "mv-agusta", "MV אגוסטה"]];
       const brandOf = c => {
         const model = c.querySelector(".model").textContent.trim();
         const hit = BRANDS.find(([en]) => model.startsWith(en));
         return hit ? hit[1] : model.split(" ")[0].toLowerCase();
       };
-      all.forEach(c => { c.dataset.brand = brandOf(c); });
-      const counts = {};
-      all.forEach(c => { counts[c.dataset.brand] = (counts[c.dataset.brand] || 0) + 1; });
+      all.forEach(c => { c.dataset.brand = brandOf(c); c.dataset.kindOf = c.dataset.kind === "moto" ? "moto" : "car"; });
 
       const bar = document.getElementById("brands");
+      const kinds = document.getElementById("kinds");
+      const empty = document.getElementById("empty-kind");
       const pager = document.getElementById("pager");
-      const state = () => {
-        const h = location.hash;
-        const b = (h.match(/^#([a-z-]+?)(?:-page-\d+)?$/) || [])[1];
-        return { brand: b && b !== "page" && counts[b] ? b : "", page: parseInt((h.match(/page-(\d+)/) || [])[1] || "1", 10) };
+      const countsFor = kind => {
+        const c = {};
+        all.filter(x => x.dataset.kindOf === kind).forEach(x => { c[x.dataset.brand] = (c[x.dataset.brand] || 0) + 1; });
+        return c;
       };
-      const hashFor = (brand, page) => (brand ? "#" + brand : "") + (page > 1 ? (brand ? "-" : "#") + "page-" + page : "");
+      const state = () => {
+        let h = location.hash.replace(/^#/, "");
+        const kind = /^moto(-|$)/.test(h) ? "moto" : "car";
+        if (kind === "moto") h = h.replace(/^moto-?/, "");
+        const page = parseInt((h.match(/page-(\d+)/) || [])[1] || "1", 10);
+        const b = h.replace(/-?page-\d+$/, "");
+        return { kind, brand: b && countsFor(kind)[b] ? b : "", page };
+      };
+      const hashFor = (kind, brand, page) => {
+        const parts = [kind === "moto" ? "moto" : "", brand, page > 1 ? "page-" + page : ""].filter(Boolean);
+        return parts.length ? "#" + parts.join("-") : "";
+      };
 
-      // one "סוג רכב" button that opens a short list
+      // one "סוג רכב" button that opens a short list of the brands in the chosen kind
       const toggle = bar.querySelector(".brands-toggle");
       const menu = bar.querySelector(".brands-list");
-      const names = { "": "כל הרכבים" };
-      const item = (key, text, n) => {
-        names[key] = text;
-        const li = document.createElement("li");
-        const b = document.createElement("button");
-        b.type = "button"; b.setAttribute("role", "menuitemradio"); b.dataset.brand = key;
-        b.innerHTML = "<span>" + text + "</span><small>" + n + "</small>";
-        b.addEventListener("click", () => { closeMenu(); go(key, 1); });
-        li.appendChild(b); menu.appendChild(li);
-      };
-      item("", "כל הרכבים", all.length);
-      BRANDS.filter(([, key]) => counts[key]).forEach(([, key, he]) => item(key, he, counts[key]));
-      Object.keys(counts).filter(k => !BRANDS.some(([, key]) => key === k)).forEach(k => item(k, k, counts[k]));
+      const names = {};
+      let current = { kind: "car", brand: "" };
+      function buildMenu(kind) {
+        menu.innerHTML = "";
+        const counts = countsFor(kind);
+        const item = (key, text, n) => {
+          names[key] = text;
+          const li = document.createElement("li");
+          const b = document.createElement("button");
+          b.type = "button"; b.setAttribute("role", "menuitemradio"); b.dataset.brand = key;
+          b.innerHTML = "<span>" + text + "</span><small>" + n + "</small>";
+          b.addEventListener("click", () => { closeMenu(); go(current.kind, key, 1); });
+          li.appendChild(b); menu.appendChild(li);
+        };
+        const total = Object.values(counts).reduce((a, b) => a + b, 0);
+        item("", kind === "moto" ? "כל האופנועים" : "כל הרכבים", total);
+        BRANDS.filter(([, key]) => counts[key]).forEach(([, key, he]) => item(key, he, counts[key]));
+        Object.keys(counts).filter(k => !BRANDS.some(([, key]) => key === k)).forEach(k => item(k, k, counts[k]));
+        bar.hidden = total === 0;
+      }
       const openMenu = () => { menu.hidden = false; toggle.setAttribute("aria-expanded", "true"); };
       const closeMenu = () => { menu.hidden = true; toggle.setAttribute("aria-expanded", "false"); };
       toggle.addEventListener("click", () => menu.hidden ? openMenu() : closeMenu());
       document.addEventListener("click", e => { if (!bar.contains(e.target)) closeMenu(); });
       document.addEventListener("keydown", e => { if (e.key === "Escape" && !menu.hidden) { closeMenu(); toggle.focus(); } });
-      bar.hidden = false;
+      kinds.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { closeMenu(); go(b.dataset.kind, "", 1); }));
+      kinds.hidden = false;
 
-      function show(brand, n, scroll) {
-        const cars = all.filter(c => !brand || c.dataset.brand === brand);
+      function show(kind, brand, n, scroll) {
+        if (kind !== current.kind || !menu.children.length) buildMenu(kind);
+        current = { kind, brand };
+        kinds.querySelectorAll("button").forEach(b => b.setAttribute("aria-selected", b.dataset.kind === kind));
+        const cars = all.filter(c => c.dataset.kindOf === kind && (!brand || c.dataset.brand === brand));
         const pages = Math.max(1, Math.ceil(cars.length / PER_PAGE));
         n = Math.min(pages, Math.max(1, n));
         menu.querySelectorAll("button").forEach(b => b.setAttribute("aria-checked", b.dataset.brand === brand));
-        toggle.textContent = brand ? "סוג רכב: " + names[brand] : "סוג רכב";
+        toggle.textContent = brand ? "סוג: " + names[brand] : (kind === "moto" ? "סוג אופנוע" : "סוג רכב");
+        empty.hidden = cars.length > 0;
         all.forEach(c => { c.hidden = true; });
         cars.forEach((c, i) => { c.hidden = Math.floor(i / PER_PAGE) + 1 !== n; });
         pager.hidden = pages < 2;
@@ -1911,7 +1967,7 @@
           if (opts.aria) b.setAttribute("aria-label", opts.aria);
           if (page === n && !opts.nav) b.setAttribute("aria-current", "page");
           if (opts.disabled) b.disabled = true;
-          b.addEventListener("click", () => go(brand, page));
+          b.addEventListener("click", () => go(kind, brand, page));
           pager.appendChild(b);
         };
         btn("→", n - 1, { nav: true, aria: "העמוד הקודם", disabled: n === 1 });
@@ -1920,15 +1976,15 @@
         if (scroll) scrollTop();
       }
       function scrollTop() {
-        bar.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        kinds.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
       }
-      function go(brand, n) {
-        history.replaceState(null, "", hashFor(brand, n) || location.pathname);
-        show(brand, n, true);
+      function go(kind, brand, n) {
+        history.replaceState(null, "", hashFor(kind, brand, n) || location.pathname);
+        show(kind, brand, n, true);
       }
-      const s = state();
-      show(s.brand, s.page, false);
-      addEventListener("hashchange", () => { const t = state(); show(t.brand, t.page, true); });
+      const s0 = state();
+      show(s0.kind, s0.brand, s0.page, false);
+      addEventListener("hashchange", () => { const t = state(); show(t.kind, t.brand, t.page, true); });
     })();
 
     // clicking a thumbnail swaps the main photo of that card
