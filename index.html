@@ -304,7 +304,12 @@
   }
   .cta:hover { background: #2A2D31; }
   .cta svg { width: 20px; height: 20px; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  /* the header blends with "difference" and the filter bar is dark, so a white ring is the one that shows there */
+  header :focus-visible, .filters :focus-visible { outline-color: #fff; }
+  .skip { position: absolute; top: 8px; right: 8px; z-index: 50; padding: 10px 16px; background: #fff; color: #0E0F11; transform: translateY(-200%); }
+  .skip:focus-visible { transform: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   /* ---------- Pages of cars ---------- */
   .pager { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 40px auto 0; flex-wrap: wrap; width: fit-content; padding: 10px; background: var(--bg); border: 1px solid var(--rule); }
@@ -417,6 +422,7 @@
 </style>
 </head>
 <body>
+  <a class="skip" href="#main">דלגו לרשימת הרכבים</a>
   <header>
     <h1 class="brand">Silverstein</h1>
     <div class="rule" aria-hidden="true"></div>
@@ -458,7 +464,7 @@
     </div>
   </dialog>
 
-  <main>
+  <main id="main" tabindex="-1">
     <div class="filters">
       <div class="kinds" id="kinds" role="tablist" aria-label="רכבים או אופנועים" hidden>
         <button type="button" role="tab" data-kind="car" aria-selected="true">רכבים</button>
@@ -2578,6 +2584,7 @@
         });
       });
     });
-  </script>
+    document.querySelectorAll('a[target="_blank"]').forEach(a => a.insertAdjacentHTML("beforeend", '<span class="sr-only"> (נפתח בחלון חדש)</span>'));
+</script>
 </body>
 </html>

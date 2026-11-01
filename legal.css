@@ -26,7 +26,7 @@ h2 { font-size: 19px; font-weight: 700; margin: 34px 0 8px; }
 p + p { margin-top: 10px; }
 ul { padding-right: 20px; display: grid; gap: 6px; }
 a { color: inherit; text-underline-offset: 4px; }
-a:focus-visible { outline: 2px solid #0E0F11; outline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #0E0F11; outline-offset: 3px; }
 .contact { margin-top: 12px; padding: 16px 18px; border: 1px solid #D9DCDF; display: grid; gap: 4px; }
 footer {
   border-top: 1px solid #D9DCDF;
