@@ -15,12 +15,14 @@
       where: { fieldFilter: { field: { fieldPath: "hidden" }, op: "EQUAL", value: { booleanValue: false } } }
     } }, signal);
     return res.filter(x => x.document).map(x => {
-      const f = x.document.fields;
-      const l = JSON.parse(f.data.stringValue);
-      l.id = x.document.name.split("/").pop();
-      l.sort = Number(f.sort.integerValue != null ? f.sort.integerValue : f.sort.doubleValue);
-      return l;
-    }).sort((a, b) => a.sort - b.sort);
+      try {
+        const f = x.document.fields;
+        const l = JSON.parse(f.data.stringValue);
+        l.id = x.document.name.split("/").pop();
+        l.sort = Number(f.sort.integerValue != null ? f.sort.integerValue : f.sort.doubleValue);
+        return l.model ? l : null;
+      } catch (e) { return null; }   // one broken listing shouldn't hide the rest
+    }).filter(Boolean).sort((a, b) => a.sort - b.sort);
   }
 
   const cache = {};
