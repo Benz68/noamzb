@@ -75,6 +75,19 @@
     .pairs .pair { grid-template-columns: 1fr 1fr auto; }
     .pairs .pair .small-check { grid-column: 1 / -1; }
   }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:#fff; }
+  .seg button { border:0; border-radius:0; padding:8px 12px; }
+  .seg button[aria-selected="true"] { background: var(--ink); color:#fff; }
+  .access { margin-bottom:14px; }
+  .access h2 { margin:0 0 8px; font-size:16px; font-weight:500; }
+  .access h2 small { color: var(--muted); font-weight:400; font-size:12px; }
+  .access h3 { margin:12px 0 6px; font-size:14px; font-weight:500; }
+  .person { display:flex; align-items:center; gap:8px; padding:8px 0; border-top:1px solid var(--line); flex-wrap: wrap; }
+  .person span { flex:1; min-width: 180px; direction:ltr; text-align:right; }
+  .person button { padding:5px 10px; font-size:13px; }
+  .person.pending { background:#fff8e6; padding:8px; border-radius:8px; border:0; margin-bottom:6px; }
+  .add-admin { display:flex; gap:8px; margin-top:10px; }
+  .add-admin input { max-width: 320px; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -97,6 +110,7 @@
     <h2>כניסה לניהול</h2>
     <p style="color:var(--muted);margin-top:0">כניסה עם חשבון Google. רק חשבון המנהל יכול לנהל את הרכבים.</p>
     <button type="button" class="primary" id="google" style="width:100%">כניסה עם Google</button>
+    <p id="pending" hidden style="margin-top:14px;padding:12px;background:#fff8e6;border-radius:8px">בקשת הגישה שלך נשלחה לבעלים של האתר. אחרי שהוא יאשר אותה, תוכל להיכנס מכאן.</p>
     <div class="msg" id="login-msg" role="status"></div>
   </section>
 
@@ -104,9 +118,32 @@
   <section id="v-list" hidden>
     <div class="toolbar">
       <button type="button" class="primary" id="new">+ רכב חדש</button>
+      <button type="button" class="primary" id="new-moto">+ אופנוע חדש</button>
+      <div class="seg" id="kind-filter" role="tablist" aria-label="סינון">
+        <button type="button" role="tab" data-k="" aria-selected="true">הכול</button>
+        <button type="button" role="tab" data-k="car" aria-selected="false">רכבים</button>
+        <button type="button" role="tab" data-k="moto" aria-selected="false">אופנועים</button>
+      </div>
       <input id="q" type="search" placeholder="חיפוש לפי דגם או שנה">
       <span id="count" style="color:var(--muted);font-size:13px"></span>
     </div>
+
+    <!-- only the owner sees this: access requests and approved admins -->
+    <div class="card access" id="access" hidden>
+      <h2>הרשאות ניהול <small>רק לך</small></h2>
+      <div id="req-box" hidden>
+        <h3>ממתינים לאישור</h3>
+        <div id="requests"></div>
+      </div>
+      <h3>מנהלים מאושרים</h3>
+      <div id="admins"></div>
+      <form id="f-admin" class="add-admin">
+        <input id="admin-email" type="email" placeholder="הוספת מנהל לפי אימייל" dir="ltr" required>
+        <button>הוספה</button>
+      </form>
+      <div class="msg" id="access-msg" role="status"></div>
+    </div>
+
     <div class="msg" id="list-msg" role="status"></div>
     <div class="rows" id="rows"></div>
   </section>

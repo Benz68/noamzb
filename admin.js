@@ -1,8 +1,9 @@
 // Admin panel for the listings: Google sign-in, Firestore for listings and photos.
-// Who may write is enforced by firebase/firestore.rules; SS_CONFIG.admins only picks which screen to show.
+// Who may write is enforced by firebase/firestore.rules: the owner (SS_CONFIG.owner) plus the admins they approved
+// (documents in admins/). Anyone else who signs in can only leave a request in requests/ for the owner to approve.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const $ = id => document.getElementById(id);
 const cfg = window.SS_CONFIG || {};
@@ -19,7 +20,7 @@ if (!cfg.projectId || !cfg.apiKey) {
   const app = initializeApp({ apiKey: cfg.apiKey, authDomain: cfg.authDomain, projectId: cfg.projectId, appId: cfg.appId });
   const auth = getAuth(app);
   const db = getFirestore(app);
-  const admins = (cfg.admins || []).map(e => e.toLowerCase());
+  const owner = (cfg.owner || "").toLowerCase();
   let listings = [], cur = null;
   const photoCache = {};   // photo id -> {main, thumb}
 
@@ -45,15 +46,69 @@ if (!cfg.projectId || !cfg.apiKey) {
     if (!user) { view("v-login"); $("logout").hidden = true; $("who").textContent = ""; return; }
     $("who").textContent = "· " + user.email;
     $("logout").hidden = false;
-    if (!admins.includes((user.email || "").toLowerCase())) {
+    const email = (user.email || "").toLowerCase();
+    const isOwner = email === owner;
+    // an approved admin can read their own admins/ doc; for anyone else the rules refuse the read
+    const approved = isOwner || await getDoc(doc(db, "admins", email)).then(d => d.exists(), () => false);
+    $("pending").hidden = true;
+    if (!approved) {
       view("v-login");
-      say($("login-msg"), "לחשבון " + user.email + " אין הרשאת ניהול.", "err");
+      await setDoc(doc(db, "requests", email), { email, name: user.displayName || "", at: serverTimestamp() }).catch(() => {});  // already requested: ignore
+      $("pending").hidden = false;
+      say($("login-msg"), "מחובר כ־" + user.email + ". לחשבון הזה עדיין אין הרשאת ניהול.", "err");
       return;
     }
     say($("login-msg"), "");
+    $("access").hidden = !isOwner;
+    if (isOwner) loadAccess();
     await loadList();
     view("v-list");
   });
+
+  // ---------- access (owner only) ----------
+  async function loadAccess() {
+    try {
+      const [reqs, adms] = await Promise.all([getDocs(collection(db, "requests")), getDocs(collection(db, "admins"))]);
+      $("req-box").hidden = reqs.empty;
+      $("requests").innerHTML = "";
+      reqs.docs.forEach(d => {
+        const r = d.data();
+        const row = person(r.email + (r.name ? " (" + r.name + ")" : ""), "pending");
+        row.append(btn("אישור", "primary", () => approve(r.email)), btn("דחייה", "danger", () => decline(r.email)));
+        $("requests").appendChild(row);
+      });
+      $("admins").innerHTML = "";
+      $("admins").appendChild(person(owner + " · בעלים", ""));
+      adms.docs.forEach(d => {
+        const row = person(d.id, "");
+        row.append(btn("הסרה", "danger", () => revoke(d.id)));
+        $("admins").appendChild(row);
+      });
+    } catch (e) { say($("access-msg"), "שגיאה: " + e.message, "err"); }
+  }
+  const person = (text, cls) => { const d = document.createElement("div"); d.className = "person " + cls; const s = document.createElement("span"); s.textContent = text; d.appendChild(s); return d; };
+  const btn = (text, cls, fn) => { const b = document.createElement("button"); b.type = "button"; b.className = cls; b.textContent = text; b.addEventListener("click", fn); return b; };
+  async function approve(email) {
+    email = email.trim().toLowerCase();
+    try {
+      await setDoc(doc(db, "admins", email), { email, by: owner, at: serverTimestamp() });
+      await deleteDoc(doc(db, "requests", email)).catch(() => {});
+      say($("access-msg"), email + " אושר כמנהל.", "ok");
+    } catch (e) { say($("access-msg"), "שגיאה: " + e.message, "err"); }
+    loadAccess();
+  }
+  async function decline(email) {
+    try { await deleteDoc(doc(db, "requests", email)); say($("access-msg"), "הבקשה של " + email + " נדחתה.", "ok"); }
+    catch (e) { say($("access-msg"), "שגיאה: " + e.message, "err"); }
+    loadAccess();
+  }
+  async function revoke(email) {
+    if (!confirm("להסיר את " + email + " מהמנהלים?")) return;
+    try { await deleteDoc(doc(db, "admins", email)); say($("access-msg"), email + " הוסר.", "ok"); }
+    catch (e) { say($("access-msg"), "שגיאה: " + e.message, "err"); }
+    loadAccess();
+  }
+  $("f-admin").addEventListener("submit", e => { e.preventDefault(); const v = $("admin-email").value; $("admin-email").value = ""; approve(v); });
 
   // ---------- list ----------
   async function loadList() {
@@ -70,7 +125,7 @@ if (!cfg.projectId || !cfg.apiKey) {
   const fmt = n => n ? Number(n).toLocaleString("en-US") + " ₪" : "—";
   function drawRows() {
     const q = $("q").value.trim().toLowerCase();
-    const shown = listings.filter(l => !q || (l.model + " " + l.year + " " + (l.subtitle || "")).toLowerCase().includes(q))
+    const shown = listings.filter(l => (!kindFilter || (l.kind || "car") === kindFilter) && (!q || (l.model + " " + l.year + " " + (l.subtitle || "")).toLowerCase().includes(q)))
       .sort((a, b) => (b.deal - a.deal) || (b.sort - a.sort));
     $("count").textContent = listings.length + " מודעות · " + listings.filter(l => !l.hidden).length + " באתר";
     $("rows").innerHTML = "";
@@ -99,6 +154,12 @@ if (!cfg.projectId || !cfg.apiKey) {
     });
   }
   $("q").addEventListener("input", drawRows);
+  let kindFilter = "";
+  $("kind-filter").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    kindFilter = b.dataset.k;
+    $("kind-filter").querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", x === b));
+    drawRows();
+  }));
   async function patch(l, fields) {
     const next = Object.assign({}, l, fields);
     try { await setDoc(doc(db, "listings", l.id), toDoc(next)); }
@@ -119,10 +180,11 @@ if (!cfg.projectId || !cfg.apiKey) {
   }
 
   // ---------- editor ----------
-  const blank = () => ({ id: null, kind: "car", model: "", subtitle: "", price: null, old_price: null, year: "", km: "", hand: "",
-    key_specs: KEY_CAR.map(k => ({ k, v: "" })), details: [], features: [], note: "", card_note: "", card_warn: false,
+  const blank = (kind = "car") => ({ id: null, kind, model: "", subtitle: "", price: null, old_price: null, year: "", km: "", hand: "",
+    key_specs: (kind === "moto" ? KEY_MOTO : KEY_CAR).map(k => ({ k, v: "" })), details: [], features: [], note: "", card_note: "", card_warn: false,
     illus: false, deal: false, hidden: false, images: [], wa_text: "" });
-  $("new").addEventListener("click", () => openEditor(null));
+  $("new").addEventListener("click", () => openEditor(null, "car"));
+  $("new-moto").addEventListener("click", () => openEditor(null, "moto"));
   $("back").addEventListener("click", () => view("v-list"));
   $("cancel").addEventListener("click", () => view("v-list"));
 
@@ -147,10 +209,10 @@ if (!cfg.projectId || !cfg.apiKey) {
 
   const TEXT = ["model", "subtitle", "year", "km", "hand", "note", "card_note", "wa_text"];
   const CHECK = ["card_warn", "illus", "deal", "hidden"];
-  async function openEditor(l) {
-    cur = JSON.parse(JSON.stringify(l || blank()));
+  async function openEditor(l, kind) {
+    cur = JSON.parse(JSON.stringify(l || blank(kind)));
     cur.isNew = !l;
-    $("edit-title").textContent = l ? "עריכה: " + l.model + " " + (l.year || "") : "רכב חדש";
+    $("edit-title").textContent = l ? "עריכה: " + l.model + " " + (l.year || "") : (kind === "moto" ? "אופנוע חדש" : "רכב חדש");
     $("del").hidden = !l;
     $("kind").value = cur.kind;
     TEXT.forEach(k => { $(k).value = cur[k] || ""; });

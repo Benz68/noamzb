@@ -1,13 +1,14 @@
 rules_version = '2';
 // Silverstein listings. Paste into Firebase console → Firestore Database → Rules, then Publish.
-// Anyone may read what's on the site; only the emails in ADMINS may add, edit or delete (checked by Google's servers).
+// Anyone may read what's on the site. Only the owner and the admins the owner approved may add, edit or delete.
+// Anyone else who signs in can only leave an access request, which only the owner can see and approve.
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAdmin() {
-      return request.auth != null
-        && request.auth.token.email_verified == true
-        && request.auth.token.email.lower() in ['roeeritter@gmail.com'];   // more admins: add them to this list
-    }
+    function signedIn() { return request.auth != null && request.auth.token.email_verified == true; }
+    function me() { return request.auth.token.email.lower(); }
+    function isOwner() { return signedIn() && me() == 'noanzil0608@gmail.com'; }
+    function isAdmin() { return isOwner() || (signedIn() && exists(/databases/$(database)/documents/admins/$(me()))); }
+
     match /listings/{id} {
       allow read: if resource.data.hidden == false || isAdmin();
       allow write: if isAdmin();
@@ -16,8 +17,15 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
-    match /{document=**} {
-      allow read, write: if false;
+    // approved admins: doc id = email. Only the owner adds or removes them
+    match /admins/{email} {
+      allow read: if isAdmin();
+      allow write: if isOwner();
+    }
+    // access requests: a signed-in person may file one for their own email; only the owner sees and clears them
+    match /requests/{email} {
+      allow create: if signedIn() && email == me() && request.resource.data.keys().hasOnly(['email', 'name', 'at']);
+      allow read, delete: if isOwner();
     }
   }
 }
