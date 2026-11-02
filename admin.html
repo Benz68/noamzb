@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ניהול רכבים · Silverstein</title>
+<link rel="icon" href="favicon-48.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#0E0F11; --muted:#5B6067; --line:#E3E5E8; --bg:#F6F7F8; --red:#C8102E; --ok:#1E7B4F; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Heebo, system-ui, sans-serif; background: var(--bg); color: var(--ink); font-size: 15px; }
+  header { background:#0B0C0E; color:#fff; padding:14px 16px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:16px; font-weight:500; margin:0; flex:1; letter-spacing:.02em; }
+  header small { color:#9aa0a6; }
+  main { max-width: 1180px; margin: 0 auto; padding: 16px; }
+  button, .btn { font: inherit; border:1px solid var(--line); background:#fff; color:var(--ink); padding:9px 14px; border-radius:8px; cursor:pointer; }
+  button.primary { background: var(--ink); color:#fff; border-color: var(--ink); }
+  button.danger { color: var(--red); border-color: #f0c4cb; }
+  button.ghost { background: transparent; color: inherit; border-color: #3a3d42; }
+  button:disabled { opacity:.5; cursor: default; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  input, select, textarea { font: inherit; width:100%; padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; color: var(--ink); }
+  textarea { min-height: 80px; resize: vertical; }
+  label { display:block; font-size:13px; color: var(--muted); margin: 0 0 4px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .login { max-width: 420px; margin: 10vh auto; }
+  .login h2 { margin: 0 0 6px; font-weight: 500; }
+  .msg { margin-top: 12px; font-size: 14px; }
+  .msg.err { color: var(--red); } .msg.ok { color: var(--ok); }
+  .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom: 14px; }
+  .toolbar input { max-width: 260px; }
+  .rows { display:grid; gap:10px; }
+  .row { display:grid; grid-template-columns: 84px 1fr auto; gap:12px; align-items:center; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
+  .row img { width:84px; height:63px; object-fit:cover; border-radius:6px; background:#eee; }
+  .row h3 { margin:0; font-size:15px; font-weight:500; }
+  .row p { margin:2px 0 0; color: var(--muted); font-size:13px; }
+  .row .acts { display:flex; gap:6px; flex-wrap: wrap; justify-content: flex-end; }
+  .row .acts button { padding:6px 10px; font-size:13px; }
+  .tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:20px; margin-inline-start:6px; vertical-align: middle; }
+  .tag.hid { background:#eceef0; color:#5b6067; } .tag.deal { background:#fde8eb; color:#B3121B; } .tag.moto { background:#e8eefc; color:#2747a0; }
+  .row.is-hidden { opacity:.65; }
+  .editor { display:grid; grid-template-columns: minmax(0,1fr) 380px; gap:16px; align-items:start; }
+  .editor .preview { position: sticky; top: 70px; }
+  .grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }
+  .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  fieldset { border:1px solid var(--line); border-radius:12px; padding:14px; margin:0 0 14px; background:#fff; }
+  legend { padding: 0 6px; font-weight: 500; }
+  .pairs .pair { display:grid; grid-template-columns: 1fr 1.4fr auto auto; gap:6px; margin-bottom:6px; align-items:center; }
+  .pairs .pair button { padding:6px 9px; }
+  .small-check { display:flex; align-items:center; gap:4px; font-size:12px; color: var(--muted); white-space: nowrap; }
+  .checks { display:flex; flex-wrap:wrap; gap:14px; }
+  .checks label { display:flex; align-items:center; gap:6px; color: var(--ink); font-size:14px; margin:0; }
+  .checks input { width:auto; }
+  .photos { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:10px; }
+  .ph { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fafafa; }
+  .ph img { width:100%; height:110px; object-fit:cover; display:block; }
+  .ph .ctl { display:flex; gap:4px; padding:6px; }
+  .ph .ctl button { padding:4px 8px; font-size:12px; }
+  .ph input { border:0; border-top:1px solid var(--line); border-radius:0; font-size:12px; padding:6px; }
+  .ph.first { outline: 2px solid var(--ink); }
+  .drop { border:2px dashed #c9ccd1; border-radius:10px; padding:16px; text-align:center; color: var(--muted); cursor:pointer; margin-bottom:10px; }
+  .drop.over { border-color: var(--ink); color: var(--ink); }
+  .actions { display:flex; gap:8px; flex-wrap: wrap; position: sticky; bottom: 0; background: var(--bg); padding: 10px 0; }
+  .hint { font-size:12px; color: var(--muted); margin: 4px 0 0; }
+  .pv-host { background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
+  @media (max-width: 900px) {
+    .editor { grid-template-columns: 1fr; }
+    .editor .preview { position: static; order: 2; }
+    .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .row { grid-template-columns: 64px 1fr; }
+    .row img { width:64px; height:48px; }
+    .row .acts { grid-column: 1 / -1; justify-content: flex-start; }
+    .pairs .pair { grid-template-columns: 1fr 1fr auto; }
+    .pairs .pair .small-check { grid-column: 1 / -1; }
+  }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Silverstein · ניהול רכבים <small id="who"></small></h1>
+  <a class="btn" href="./" target="_blank" rel="noopener" style="background:transparent;color:#fff;border-color:#3a3d42;text-decoration:none">לאתר</a>
+  <button type="button" class="ghost" id="logout" hidden>יציאה</button>
+</header>
+
+<main>
+  <!-- not configured -->
+  <section id="v-config" class="card login" hidden>
+    <h2>המערכת עוד לא מחוברת</h2>
+    <p>צריך למלא את כתובת הפרויקט ואת המפתח בקובץ <code>config.js</code>.</p>
+  </section>
+
+  <!-- login -->
+  <section id="v-login" class="card login" hidden>
+    <h2>כניסה לניהול</h2>
+    <p style="color:var(--muted);margin-top:0">כניסה עם חשבון Google. רק חשבון המנהל יכול לנהל את הרכבים.</p>
+    <button type="button" class="primary" id="google" style="width:100%">כניסה עם Google</button>
+    <div class="msg" id="login-msg" role="status"></div>
+  </section>
+
+  <!-- list -->
+  <section id="v-list" hidden>
+    <div class="toolbar">
+      <button type="button" class="primary" id="new">+ רכב חדש</button>
+      <input id="q" type="search" placeholder="חיפוש לפי דגם או שנה">
+      <span id="count" style="color:var(--muted);font-size:13px"></span>
+    </div>
+    <div class="msg" id="list-msg" role="status"></div>
+    <div class="rows" id="rows"></div>
+  </section>
+
+  <!-- editor -->
+  <section id="v-edit" hidden>
+    <div class="toolbar"><button type="button" id="back">→ חזרה לרשימה</button><strong id="edit-title"></strong></div>
+    <div class="editor">
+      <form id="f-edit" novalidate>
+        <fieldset>
+          <legend>פרטים עיקריים</legend>
+          <div class="grid">
+            <div><label for="kind">סוג</label><select id="kind"><option value="car">רכב</option><option value="moto">אופנוע</option></select></div>
+            <div style="grid-column: span 2"><label for="model">יצרן ודגם (באנגלית, למשל Jeep Wrangler)</label><input id="model" required></div>
+          </div>
+          <div style="margin-top:10px"><label for="subtitle">גרסה / שורה מתחת לדגם (למשל Unlimited · 2.0 Turbo · 272 hp)</label><input id="subtitle"></div>
+          <div class="grid" style="margin-top:10px">
+            <div><label for="price">מחיר (₪)</label><input id="price" inputmode="numeric"></div>
+            <div><label for="old_price">מחיר קודם (קו חוצה, לא חובה)</label><input id="old_price" inputmode="numeric"></div>
+            <div><label for="year">שנה</label><input id="year" inputmode="numeric"></div>
+            <div><label for="km">ק״מ</label><input id="km" inputmode="numeric"></div>
+            <div><label for="hand">יד</label><input id="hand" inputmode="numeric"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>תמונות</legend>
+          <div class="drop" id="drop" tabindex="0" role="button">גררו לכאן תמונות או לחצו לבחירה<br><small>התמונה הראשונה היא התמונה הראשית. לפני העלאה לטשטש לוחיות רישוי.</small></div>
+          <input type="file" id="files" accept="image/*" multiple hidden>
+          <div class="photos" id="photos"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>6 הנתונים בכרטיס</legend>
+          <div class="pairs" id="key_specs"></div>
+          <button type="button" data-add="key_specs">+ שורה</button>
+          <p class="hint">"קטן" מקטין את הטקסט בריבוע (לטקסט ארוך כמו "ללא טסט כרגע").</p>
+        </fieldset>
+
+        <fieldset>
+          <legend>כל הפרטים והאבזור</legend>
+          <label>פרטים (שם וערך)</label>
+          <div class="pairs" id="details"></div>
+          <button type="button" data-add="details">+ פרט</button>
+          <div style="margin-top:12px"><label for="features">אבזור, שורה לכל פריט</label><textarea id="features" rows="5"></textarea></div>
+          <div style="margin-top:10px"><label for="note">פסקת תיאור</label><textarea id="note" rows="3"></textarea></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>שורה מעל כפתור הוואטסאפ</legend>
+          <input id="card_note" placeholder="משפט קצר">
+          <div class="checks" style="margin-top:8px"><label><input type="checkbox" id="card_warn"> עם קו אדום (אזהרה)</label></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>הגדרות</legend>
+          <div class="checks">
+            <label><input type="checkbox" id="deal"> ממומן (מוצג ראשון)</label>
+            <label><input type="checkbox" id="illus"> תמונות להמחשה</label>
+            <label><input type="checkbox" id="hidden"> מוסתר מהאתר</label>
+          </div>
+          <div style="margin-top:12px"><label for="wa_text">הודעת וואטסאפ (ריק = "היי, אני מתעניין ב… שראיתי באתר")</label><input id="wa_text"></div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="primary" id="save">שמירה ופרסום</button>
+          <button type="button" id="cancel">ביטול</button>
+          <button type="button" class="danger" id="del" hidden>מחיקה</button>
+        </div>
+        <div class="msg" id="edit-msg" role="status"></div>
+      </form>
+
+      <aside class="preview">
+        <label>תצוגה מקדימה, בדיוק כמו באתר</label>
+        <div class="pv-host" id="pv"></div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script src="cards.js"></script>
+<script type="module" src="admin.js"></script>
+</body>
+</html>

@@ -59,7 +59,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Heebo:wght@300;400&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
 <style>
+  html.js .cars:not(.ready) { visibility: hidden; min-height: 60vh; }
   :root {
     --bg: #FFFFFF;
     --ink: #0E0F11;
@@ -2515,6 +2517,9 @@
     <p class="copy">© <span id="year"></span> Silverstein</p>
   </footer>
 
+  <script src="config.js"></script>
+  <script src="cards.js"></script>
+  <script src="store.js"></script>
   <script>
     // "list your car" panel: smooth open/close on top of the page
     (function () {
@@ -2545,7 +2550,7 @@
     // order: the pinned "best price" car first, then newest first (new cards are added at the end of the list).
     // a cars/motorcycles switch (cards with data-kind="moto" are motorcycles), a brand filter, six per page.
     // Kind, brand and page live in the address (#moto, #lexus-page-2, #moto-ducati) so they can be shared
-    (function () {
+    function initListings() {
       const PER_PAGE = 6;
       const list = document.querySelector(".cars");
       const all = [...list.querySelectorAll(":scope > .car")].reverse();
@@ -2656,21 +2661,53 @@
       const s0 = state();
       show(s0.kind, s0.brand, s0.page, false);
       addEventListener("hashchange", () => { const t = state(); show(t.kind, t.brand, t.page, true); });
-    })();
+    }
 
-    // clicking a thumbnail swaps the main photo of that card
-    document.querySelectorAll(".car").forEach(card => {
+    // clicking a thumbnail swaps the main photo of that card (delegated, so cards drawn later work too)
+    document.querySelector(".cars").addEventListener("click", e => {
+      const btn = e.target.closest(".thumbs button");
+      if (!btn) return;
+      const card = btn.closest(".car");
       const main = card.querySelector(".main");
-      card.querySelectorAll(".thumbs button").forEach(btn => {
-        btn.addEventListener("click", () => {
-          main.src = btn.dataset.src;
-          main.alt = btn.dataset.alt;
-          main.style.objectPosition = btn.dataset.pos || "";
-          card.querySelectorAll(".thumbs button").forEach(b => b.setAttribute("aria-pressed", b === btn));
-        });
-      });
+      main.src = btn.dataset.src;
+      main.alt = btn.dataset.alt;
+      main.style.objectPosition = btn.dataset.pos || "";
+      card.querySelectorAll(".thumbs button").forEach(b => b.setAttribute("aria-pressed", b === btn));
     });
-    document.querySelectorAll('a[target="_blank"]').forEach(a => a.insertAdjacentHTML("beforeend", '<span class="sr-only"> (נפתח בחלון חדש)</span>'));
+    const markNewTab = root => root.querySelectorAll('a[target="_blank"]:not([data-nt])').forEach(a => {
+      a.dataset.nt = "";
+      a.insertAdjacentHTML("beforeend", '<span class="sr-only"> (נפתח בחלון חדש)</span>');
+    });
+
+    // listings come from the database (Firestore, managed in admin.html); the cards written in this file are only a
+    // fallback for when it can't be reached. The list stays hidden until it's ready (html.js .cars:not(.ready))
+    (async function () {
+      const list = document.querySelector(".cars");
+      let rows = null;
+      if (window.SSStore && SSStore.ready) {
+        try {
+          const ctl = new AbortController();
+          const timer = setTimeout(() => ctl.abort(), 5000);
+          rows = await SSStore.listings(ctl.signal);
+          clearTimeout(timer);
+        } catch (e) { /* keep the built-in cards */ }
+      }
+      if (rows && rows.length) list.innerHTML = rows.map(l => SSCards.renderCard(l)).join("");
+      initListings();
+      const firstMain = list.querySelector(".car:not([hidden]) .main");
+      if (firstMain) { firstMain.loading = "eager"; firstMain.fetchPriority = "high"; }
+      list.classList.add("ready");
+      markNewTab(document);
+      // photos stored in the database load when their card comes into view
+      if (window.SSStore && SSStore.ready && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver(entries => entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          io.unobserve(en.target);
+          SSCards.loadPhotos(en.target.closest(".car"), SSStore.photos).catch(() => {});
+        }), { rootMargin: "400px 0px" });
+        list.querySelectorAll(".car .main[data-ph]").forEach(m => io.observe(m));
+      }
+    })();
 </script>
 </body>
 </html>
