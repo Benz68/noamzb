@@ -330,15 +330,21 @@
   .car[hidden], .pager[hidden] { display: none; }
 
   /* ---------- Follow us ---------- */
-  .follow { margin-top: 26px; }
-  .follow-title { font-size: 13px; letter-spacing: .14em; color: var(--muted); }
-  .follow-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  /* outside the header on purpose: each text is inverted on its own, so the red lines stay red on both halves.
+     .follow itself must not get a z-index or transform, or the inversion stops seeing the background */
+  .follow { --ink: #FFFFFF; --muted: #A4AAB0; margin-top: 26px; padding: 0 16px; text-align: center; }
+  .follow-title { font-size: 13px; letter-spacing: .14em; color: var(--muted); mix-blend-mode: difference; }
+  .follow-groups { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px 36px; margin-top: 14px; }
+  .follow-head { display: inline-block; padding: 0 14px 5px; border-bottom: 2px solid #D0161F; }
+  .follow-head span { display: block; font-size: 13px; font-weight: 500; letter-spacing: .06em; color: var(--ink); mix-blend-mode: difference; }
+  .follow-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
   .soc {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 10px 12px; min-height: 44px;
     color: var(--ink); text-decoration: none;
     font-size: 14px;
     opacity: .72;
+    mix-blend-mode: difference;
     transition: opacity .25s, text-shadow .25s;
   }
   .soc svg { width: 20px; height: 20px; flex: none; }
@@ -437,14 +443,26 @@
       <span>העלאת הרכב או האופנוע שלכם לאתר</span>
       <span class="arrow" aria-hidden="true">←</span>
     </a>
-    <div class="follow">
-      <p class="follow-title">תעקבו אחרינו</p>
-      <div class="follow-links">
-        <a class="soc soc-ig" href="https://www.instagram.com/silverstein.812/" target="_blank" rel="noopener" aria-label="Silverstein באינסטגרם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".7" fill="currentColor" stroke="none"/></svg><span dir="ltr">@silverstein.812</span></a>
-        <a class="soc soc-tt" href="https://www.tiktok.com/@silverstein812" target="_blank" rel="noopener" aria-label="Silverstein בטיקטוק"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/></svg><span dir="ltr">@silverstein812</span></a>
+  </header>
+  <div class="follow">
+    <p class="follow-title">תעקבו אחרינו</p>
+    <div class="follow-groups">
+      <div class="follow-group">
+        <p class="follow-head"><span>רכבים</span></p>
+        <div class="follow-links">
+          <a class="soc soc-ig" href="https://www.instagram.com/silverstein.812/" target="_blank" rel="noopener" aria-label="רכבים באינסטגרם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".7" fill="currentColor" stroke="none"/></svg><span dir="ltr">@silverstein.812</span></a>
+          <a class="soc soc-tt" href="https://www.tiktok.com/@silverstein812" target="_blank" rel="noopener" aria-label="רכבים בטיקטוק"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/></svg><span dir="ltr">@silverstein812</span></a>
+        </div>
+      </div>
+      <div class="follow-group">
+        <p class="follow-head"><span>אופנועים</span></p>
+        <div class="follow-links">
+          <a class="soc soc-ig" href="https://www.instagram.com/r.r.motorss/" target="_blank" rel="noopener" aria-label="אופנועים באינסטגרם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".7" fill="currentColor" stroke="none"/></svg><span dir="ltr">@r.r.motorss</span></a>
+          <a class="soc soc-tt" href="https://www.tiktok.com/@r.s.motors93" target="_blank" rel="noopener" aria-label="אופנועים בטיקטוק"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3.1a7 7 0 0 1-3.8-1.2v5.6c0 7-7.6 9.2-10.7 4.2-2-3.3-.8-9 5.7-9.2v3.2a5 5 0 0 0-1.4.3c-1.3.4-2 1.3-1.8 2.7.4 2.8 5.5 3.6 5.1-1.8V3h3Z"/></svg><span dir="ltr">@r.s.motors93</span></a>
+        </div>
       </div>
     </div>
-  </header>
+  </div>
 
   <dialog class="sell" id="sell" aria-labelledby="sell-title">
     <div class="sell-inner">
