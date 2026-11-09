@@ -333,13 +333,24 @@
   /* on the right, just above the tabs, straight on the page background. Each text is inverted on its own so it
      stays readable if the diagonal reaches it; .follow must not get a z-index or transform, or that stops working */
   .follow { --ink: #FFFFFF; margin-bottom: 12px; text-align: right; }
-  .follow-title { font-size: 13px; letter-spacing: .14em; color: #A4AAB0; mix-blend-mode: difference; }
-  .follow-groups { display: grid; justify-items: start; gap: 10px; margin-top: 10px; }
-  .follow-head { display: inline-block; padding: 0 0 5px 22px; border-bottom: 2px solid #D0161F; }
-  .follow-head span { display: block; font-size: 13px; font-weight: 500; letter-spacing: .06em; color: #FFFFFF; mix-blend-mode: difference; }
-  .follow-links { display: flex; flex-wrap: wrap; gap: 0 6px; margin: 2px -12px 0 0; }
+  .follow-title { font-size: 12px; letter-spacing: .22em; color: #8E949A; mix-blend-mode: difference; }
+  /* two rows, one per group: the label (with a short red rule under it) and then its links on the same line,
+     so the icons of both rows line up in one column */
+  .follow-groups { display: grid; justify-items: start; gap: 2px; margin-top: 8px; }
+  .follow-group { display: flex; align-items: center; gap: 10px; }
+  .follow-head { position: relative; min-width: 66px; padding-bottom: 6px; }
+  .follow-head::after { content: ""; position: absolute; right: 0; bottom: 0; width: 20px; height: 2px; border-radius: 2px; background: #D0161F; }
+  .follow-head span { display: block; font-size: 14px; font-weight: 600; color: #FFFFFF; mix-blend-mode: difference; }
+  .follow-links { display: flex; align-items: center; gap: 0 2px; }
+  .follow .soc { opacity: .88; font-size: 13.5px; padding: 8px 10px; }
+  .follow .soc svg { width: 19px; height: 19px; }
   /* the black side is narrow on a phone, so only the icons fit in it */
-  @media (max-width: 699px) { .follow .soc span { display: none; } }
+  @media (max-width: 699px) {
+    .follow .soc span { display: none; }
+    .follow .soc { padding: 10px 6px; min-width: 40px; min-height: 44px; justify-content: center; }
+    .follow-group { gap: 6px; }
+    .follow-head { min-width: 64px; }
+  }
   .soc {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 10px 12px; min-height: 44px;
