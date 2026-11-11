@@ -2582,7 +2582,10 @@
           pager.appendChild(b);
         };
         btn("→", n - 1, { nav: true, aria: "העמוד הקודם", disabled: n === 1 });
-        for (let i = 1; i <= pages; i++) btn(String(i), i, { aria: "עמוד " + i });
+        // at most 5 page numbers; the window slides with the current page (kept in the middle when possible)
+        const SPAN = 5;
+        const first = Math.max(1, Math.min(n - Math.floor(SPAN / 2), pages - SPAN + 1));
+        for (let i = first; i <= Math.min(pages, first + SPAN - 1); i++) btn(String(i), i, { aria: "עמוד " + i });
         btn("←", n + 1, { nav: true, aria: "העמוד הבא", disabled: n === pages });
         if (scroll) scrollTop();
       }
