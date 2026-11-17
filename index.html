@@ -443,6 +443,34 @@
   @media (max-width: 440px) {
     .key-specs { grid-template-columns: 1fr 1fr; }
   }
+  /* phones: two cars side by side, with everything inside the card scaled down to fit */
+  @media (max-width: 699px) {
+    .cars { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .thumbs { gap: 3px; padding: 3px; }
+    .thumbs button { flex-basis: calc((100% - 6px) / 3); }
+    .car-body { padding: 10px 9px 11px; gap: 9px; }
+    .car-head { flex-direction: column; align-items: stretch; gap: 4px; }
+    .model { font-size: 12px; letter-spacing: .02em; line-height: 1.35; overflow-wrap: anywhere; }
+    .trim { font-size: 11px; line-height: 1.35; }
+    .price { font-size: 15px; text-align: right; }
+    .price s, .price small { text-align: right; font-size: 11px; }
+    .specs div { padding: 6px 0; }
+    .specs dt { font-size: 10px; }
+    .specs dd { font-size: 12.5px; }
+    .key-specs { grid-template-columns: 1fr 1fr; }
+    .key-specs div { padding: 6px 6px 7px; }
+    .key-specs dt { font-size: 10px; }
+    .key-specs dd { font-size: 11.5px !important; line-height: 1.3; overflow-wrap: anywhere; }
+    .more summary { font-size: 12.5px; padding: 8px 0; }
+    .more summary::after { font-size: 16px; }
+    .details { font-size: 11.5px; }
+    .details li { flex-direction: column; gap: 1px; }
+    .features li { font-size: 11px; padding: 3px 6px; }
+    .note, .card-note { font-size: 11.5px; }
+    .cta { padding: 10px 6px; font-size: 13px; gap: 6px; }
+    .cta svg { width: 16px; height: 16px; }
+    .deal-tag, .illus { font-size: 10px !important; padding: 3px 7px !important; }
+  }
 </style>
 </head>
 <body>
