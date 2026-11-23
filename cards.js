@@ -64,7 +64,7 @@
       h += '</details>';
     }
     if (l.card_note) h += '<p class="card-note' + (l.card_warn ? " warn" : "") + '">' + txt(l.card_note) + '</p>';
-    const msg = l.wa_text || ("היי, אני מתעניין ב" + (l.kind === "moto" ? "אופנוע " : "-") + l.model + " " + l.year + " שראיתי באתר");
+    const msg = l.wa_text || ("היי, אני מתעניין ב" + "-" + l.model + " " + l.year + " שראיתי באתר");
     h += '<a class="cta" href="https://wa.me/' + (l.kind === "moto" ? WA.moto : WA.car) + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">' + WA_ICON + ' לפרטים בוואטסאפ</a>';
     h += '</div>\n</li>';
     return h;

@@ -120,11 +120,11 @@
   <section id="v-list" hidden>
     <div class="toolbar">
       <button type="button" class="primary" id="new">+ רכב חדש</button>
-      <button type="button" class="primary" id="new-moto">+ אופנוע חדש</button>
+      <button type="button" class="primary" id="new-moto" hidden>+ אופנוע חדש</button>
       <div class="seg" id="kind-filter" role="tablist" aria-label="סינון">
         <button type="button" role="tab" data-k="" aria-selected="true">הכול</button>
         <button type="button" role="tab" data-k="car" aria-selected="false">רכבים</button>
-        <button type="button" role="tab" data-k="moto" aria-selected="false">אופנועים</button>
+        <button type="button" role="tab" data-k="moto" aria-selected="false" hidden>אופנועים</button>
       </div>
       <input id="q" type="search" placeholder="חיפוש לפי דגם או שנה">
       <span id="count" style="color:var(--muted);font-size:13px"></span>
